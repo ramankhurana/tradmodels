@@ -1,0 +1,124 @@
+cloud_base_path: "path/to/cloud/datasets"
+local_base_path: "/Users/raman/JupyterNotebooks/Comparison_Multivariate/dataset"
+
+datasets:
+  ETTh1:
+    name: "ETTh1"
+    date_col: "date"
+    train: ["2016-01", "2017-06"]
+    test: ["2017-07", "2017-08"]
+    val: ["2017-09", "2017-10"]
+    lag: 12
+    horizon: 6
+    dataset_path: "{{ local_base_path }}/ETTh1.csv"
+    cloud_path: "{{ cloud_base_path }}/ETTh1.csv"
+
+  ETTh2:
+    name: "ETTh2"
+    date_col: "date"
+    train: ["2016-01", "2017-06"]
+    test: ["2017-07", "2017-08"]
+    val: ["2017-09", "2017-10"]
+    lag: 24
+    horizon: 3
+    dataset_path: "{{ local_base_path }}/ETTh2.csv"
+    cloud_path: "{{ cloud_base_path }}/ETTh2.csv"
+
+  ETTm1:
+    name: "ETTm1"
+    date_col: "timestamp"
+    train: ["2020-01", "2020-06"]
+    test: ["2020-07", "2020-08"]
+    val: ["2020-09", "2020-10"]
+    lag: 12
+    horizon: 3
+    dataset_path: "{{ local_base_path }}/ETTm1.csv"
+    cloud_path: "{{ cloud_base_path }}/ETTm1.csv"
+
+  ETTm2:
+    name: "ETTm2"
+    date_col: "timestamp"
+    train: ["2020-01", "2020-06"]
+    test: ["2020-07", "2020-08"]
+    val: ["2020-09", "2020-10"]
+    lag: 12
+    horizon: 3
+    dataset_path: "{{ local_base_path }}/ETTm2.csv"
+    cloud_path: "{{ cloud_base_path }}/ETTm2.csv"
+
+  Electricity:
+    name: "Electricity"
+    date_col: "datetime"
+    train: ["2018-01", "2018-06"]
+    test: ["2018-07", "2018-08"]
+    val: ["2018-09", "2018-10"]
+    lag: 24
+    horizon: 6
+    dataset_path: "{{ local_base_path }}/electricity.csv"
+    cloud_path: "{{ cloud_base_path }}/electricity.csv"
+
+  Exchange:
+    name: "Exchange"
+    date_col: "date"
+    train: ["2019-01", "2019-06"]
+    test: ["2019-07", "2019-08"]
+    val: ["2019-09", "2019-10"]
+    lag: 12
+    horizon: 3
+    dataset_path: "{{ local_base_path }}/exchange_rate.csv"
+    cloud_path: "{{ cloud_base_path }}/exchange_rate.csv"
+
+  Weather:
+    name: "Weather"
+    date_col: "date"
+    train: ["2019-01", "2019-06"]
+    test: ["2019-07", "2019-08"]
+    val: ["2019-09", "2019-10"]
+    lag: 12
+    horizon: 3
+    dataset_path: "{{ local_base_path }}/weather.csv"
+    cloud_path: "{{ cloud_base_path }}/weather.csv"
+
+  Illness:
+    name: "Illness"
+    date_col: "date"
+    train: ["2019-01", "2019-06"]
+    test: ["2019-07", "2019-08"]
+    val: ["2019-09", "2019-10"]
+    lag: 12
+    horizon: 3
+    dataset_path: "{{ local_base_path }}/national_illness.csv"
+    cloud_path: "{{ cloud_base_path }}/national_illness.csv"
+
+  Divvy:
+    name: "Divvy"
+    date_col: "date"
+    train: ["2019-01", "2019-06"]
+    test: ["2019-07", "2019-08"]
+    val: ["2019-09", "2019-10"]
+    lag: 12
+    horizon: 3
+    dataset_path: "{{ local_base_path }}/divvy.csv"
+    cloud_path: "{{ cloud_base_path }}/divvy.csv"
+
+  M5:
+    name: "M5"
+    date_col: "date"
+    train: ["2019-01", "2019-06"]
+    test: ["2019-07", "2019-08"]
+    val: ["2019-09", "2019-10"]
+    lag: 12
+    horizon: 3
+    dataset_path: "{{ local_base_path }}/m5.csv"
+    cloud_path: "{{ cloud_base_path }}/m5.csv"
+
+  Dilliards:
+    name: "Dilliards"
+    date_col: "date"
+    train: ["2019-01", "2019-06"]
+    test: ["2019-07", "2019-08"]
+    val: ["2019-09", "2019-10"]
+    lag: 12
+    horizon: 3
+    dataset_path: "{{ local_base_path }}/dilliards.csv"
+    cloud_path: "{{ cloud_base_path }}/dilliards.csv"

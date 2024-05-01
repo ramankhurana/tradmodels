@@ -1,0 +1,178 @@
+runschema:
+  ## this is anchor and alias schema of yaml. help to keep the yaml file DRY (don't repeat yourself). 
+  basedatasets: &basedataset
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+  ARIMA:
+    validate: false
+    runmodel: true
+    dataset: *basedataset
+    mask:
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+
+  AutoARIMA:
+    validate: false
+    runmodel: false
+    dataset:
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+    mask: []
+
+  VAR:
+    validate: false
+    runmodel: false
+    dataset:
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+    mask:
+      - mask_1
+
+  ARNET:
+    validate: false
+    runmodel: false
+    dataset:
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+    mask:
+      - mask_1
+      - mask_2
+      - mask_3
+
+  NeuralProphet:
+    validate: false
+    runmodel: false
+    dataset:
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+    mask: []
+
+  VARIMA:
+    validate: false
+    runmodel: false
+    dataset:
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+    mask: []
+
+  Autoformer:
+    validate: false
+    runmodel: false
+    dataset:
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+    mask: []
+
+  Fedformer:
+    validate: false
+    runmodel: false
+    dataset:
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+    mask: []
+
+  DLinear:
+    validate: false
+    runmodel: false
+    dataset:
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+    mask: []
