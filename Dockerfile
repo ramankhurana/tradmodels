@@ -2,7 +2,7 @@
 ## This is provided via k8 job yaml file
 
 # python image used for Extformer
-FROM python:3.9.18
+FROM python:3.10.1
 
 # set working dir
 WORKDIR /usr/src/app
