@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tradmodels-job
+  namespace: kafka-flink
+spec:
+  template:
+    metadata:
+      labels:
+        app: tradmodels
+    spec:
+      containers:
+        - name: tradmodels
+          image: tradmodels:latest
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "11Gi"
+              cpu: "3"
+            limits:
+              memory: "12Gi"
+              cpu: "4"
+          #env:
+          #  - name: SCRIPT_NAME
+          #    value: "ARIMA.sh"
+          volumeMounts:
+            - name: dataset-volume
+              mountPath: /nfs/home/khurana/dataset-tradmodels/dataset
+            - name: dshm
+              mountPath: /dev/shm
+      volumes:
+        - name: dataset-volume
+          persistentVolumeClaim:
+            claimName: tradmodels-pvc
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: "3Gi"
+      restartPolicy: Never
+  backoffLimit: 0
