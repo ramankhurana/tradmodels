@@ -1,4 +1,4 @@
-cloud_base_path: "path/to/cloud/datasets"
+cloud_base_path: "/nfs/home/khurana/dataset-tradmodels/dataset"
 local_base_path: "/Users/raman/JupyterNotebooks/Comparison_Multivariate/dataset"
 
 datasets:
