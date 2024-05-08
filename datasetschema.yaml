@@ -1,5 +1,8 @@
-cloud_base_path: "/nfs/home/khurana/dataset-tradmodels/dataset"
-local_base_path: "/Users/raman/JupyterNotebooks/Comparison_Multivariate/dataset"
+run_environment: "local"  # Change this to "cloud" when running in the cloud environment
+
+base_path: 
+  local: "/Users/raman/JupyterNotebooks/Comparison_Multivariate/dataset"
+  cloud: "/nfs/home/khurana/dataset-tradmodels/dataset"
 
 datasets:
   ETTh1:
@@ -10,8 +13,7 @@ datasets:
     val: ["2017-09", "2017-10"]
     lag: 12
     horizon: 6
-    dataset_path: "{{ local_base_path }}/ETTh1.csv"
-    cloud_path: "{{ cloud_base_path }}/ETTh1.csv"
+    dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
   ETTh2:
     name: "ETTh2"
@@ -21,8 +23,8 @@ datasets:
     val: ["2017-09", "2017-10"]
     lag: 24
     horizon: 3
-    dataset_path: "{{ local_base_path }}/ETTh2.csv"
-    cloud_path: "{{ cloud_base_path }}/ETTh2.csv"
+    dataset_path: "{{ base_path[run_environment] }}/ETTh2.csv"
+
 
   ETTm1:
     name: "ETTm1"
@@ -32,7 +34,7 @@ datasets:
     val: ["2020-09", "2020-10"]
     lag: 12
     horizon: 3
-    dataset_path: "{{ local_base_path }}/ETTm1.csv"
+    dataset_path: "{{ base_path }}/ETTm1.csv"
     cloud_path: "{{ cloud_base_path }}/ETTm1.csv"
 
   ETTm2:
@@ -43,7 +45,7 @@ datasets:
     val: ["2020-09", "2020-10"]
     lag: 12
     horizon: 3
-    dataset_path: "{{ local_base_path }}/ETTm2.csv"
+    dataset_path: "{{ base_path }}/ETTm2.csv"
     cloud_path: "{{ cloud_base_path }}/ETTm2.csv"
 
   Electricity:
@@ -54,7 +56,7 @@ datasets:
     val: ["2018-09", "2018-10"]
     lag: 24
     horizon: 6
-    dataset_path: "{{ local_base_path }}/electricity.csv"
+    dataset_path: "{{ base_path }}/electricity.csv"
     cloud_path: "{{ cloud_base_path }}/electricity.csv"
 
   Exchange:
@@ -65,7 +67,7 @@ datasets:
     val: ["2019-09", "2019-10"]
     lag: 12
     horizon: 3
-    dataset_path: "{{ local_base_path }}/exchange_rate.csv"
+    dataset_path: "{{ base_path }}/exchange_rate.csv"
     cloud_path: "{{ cloud_base_path }}/exchange_rate.csv"
 
   Weather:
@@ -76,7 +78,7 @@ datasets:
     val: ["2019-09", "2019-10"]
     lag: 12
     horizon: 3
-    dataset_path: "{{ local_base_path }}/weather.csv"
+    dataset_path: "{{ base_path }}/weather.csv"
     cloud_path: "{{ cloud_base_path }}/weather.csv"
 
   Illness:
@@ -87,7 +89,7 @@ datasets:
     val: ["2019-09", "2019-10"]
     lag: 12
     horizon: 3
-    dataset_path: "{{ local_base_path }}/national_illness.csv"
+    dataset_path: "{{ base_path }}/national_illness.csv"
     cloud_path: "{{ cloud_base_path }}/national_illness.csv"
 
   Divvy:
@@ -98,7 +100,7 @@ datasets:
     val: ["2019-09", "2019-10"]
     lag: 12
     horizon: 3
-    dataset_path: "{{ local_base_path }}/divvy.csv"
+    dataset_path: "{{ base_path }}/divvy.csv"
     cloud_path: "{{ cloud_base_path }}/divvy.csv"
 
   M5:
@@ -109,7 +111,7 @@ datasets:
     val: ["2019-09", "2019-10"]
     lag: 12
     horizon: 3
-    dataset_path: "{{ local_base_path }}/m5.csv"
+    dataset_path: "{{ base_path }}/m5.csv"
     cloud_path: "{{ cloud_base_path }}/m5.csv"
 
   Dilliards:
@@ -120,5 +122,5 @@ datasets:
     val: ["2019-09", "2019-10"]
     lag: 12
     horizon: 3
-    dataset_path: "{{ local_base_path }}/dilliards.csv"
+    dataset_path: "{{ base_path }}/dilliards.csv"
     cloud_path: "{{ cloud_base_path }}/dilliards.csv"

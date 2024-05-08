@@ -10,7 +10,8 @@ class BaseModel:
         self.scaler = StandardScaler() if scale_data else None
 
     def load_data(self):
-        self.data = pd.read_csv(self.dataset_info['cloud_path'])
+        #self.data = pd.read_csv(self.dataset_info['cloud_path'])
+        self.data = pd.read_csv(self.dataset_info['dataset_path'])
         self.data[self.dataset_info['date_col']] = pd.to_datetime(self.data[self.dataset_info['date_col']])
         self.usable_cols = list(set(self.data.columns) - {self.dataset_info['date_col']})
 

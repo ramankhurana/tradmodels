@@ -16,8 +16,14 @@ class DatasetConfig:
             data = yaml.safe_load(file)  # Load the YAML file
 
             # Store base paths
-            local_base_path = data['local_base_path']
-            cloud_base_path = data['cloud_base_path']
+            #local_base_path = data['local_base_path']
+            #cloud_base_path = data['cloud_base_path']
+            run_environment = data['run_environment']
+            base_path =  data['base_path'][run_environment]
+
+            def resolve_dataset_path(path_template, base_path):
+                """Replace the placeholder in the dataset path with the actual base path."""
+                return path_template.replace('{{ base_path[run_environment] }}', base_path)
 
             # Iterate over each dataset and store the necessary details
             for dataset_name, details in data['datasets'].items():
@@ -29,8 +35,9 @@ class DatasetConfig:
                     'val': details['val'],
                     'lag': details['lag'],
                     'horizon': details['horizon'],
-                    'dataset_path': details['dataset_path'].replace('{{ local_base_path }}', local_base_path),
-                    'cloud_path': details['cloud_path'].replace('{{ cloud_base_path }}', cloud_base_path)
+                    'dataset_path': resolve_dataset_path(details['dataset_path'], base_path)
+                    #'dataset_path': details['dataset_path']#.replace('{{ local_base_path }}', local_base_path),
+                    #'cloud_path': details['cloud_path'].replace('{{ cloud_base_path }}', cloud_base_path)
                 }
 
     def get_dataset_info(self, dataset_name):
