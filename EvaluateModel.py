@@ -29,7 +29,7 @@ class EvaluateModel:
         self.aggregate_mse=None
         self.consolidated_mse=None
 
-        self.results_dir = f'results/{model_name}'
+        self.results_dir = f'/mnt-gluster/all-data/khurana/dataset-tradmodels/results/{model_name}'
         
         if not os.path.exists(self.results_dir):
             os.makedirs(self.results_dir)
