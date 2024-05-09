@@ -29,7 +29,7 @@ class EvaluateModel:
         self.aggregate_mse=None
         self.consolidated_mse=None
 
-        self.results_dir = f'results/{model_name}'
+        self.results_dir = f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/{model_name}'
         
         if not os.path.exists(self.results_dir):
             os.makedirs(self.results_dir)
@@ -56,7 +56,7 @@ class EvaluateModel:
             np.save(os.path.join(self.results_dir, f'{column}.npy'), prediction.values())
 
     def save_results_to_csv(self):
-        results_path = f'results/results.csv'
+        results_path = f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
         results_data = {
             'Model': [self.model],
             'Dataset': [self.dataset],
