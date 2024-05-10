@@ -9,8 +9,8 @@ class DatasetConfig:
     def __init__(self, filepath):
         self.filepath = filepath
         self.datasets = {}
+        self.run_environment = ""
         self.read_yaml()
-
     def read_yaml(self):
         with open(self.filepath, 'r') as file:
             data = yaml.safe_load(file)  # Load the YAML file
@@ -19,6 +19,8 @@ class DatasetConfig:
             #local_base_path = data['local_base_path']
             #cloud_base_path = data['cloud_base_path']
             run_environment = data['run_environment']
+            self.run_environment = run_environment
+            print ("run_environment, self.run_environment", run_environment, self.run_environment)
             base_path =  data['base_path'][run_environment]
 
             def resolve_dataset_path(path_template, base_path):

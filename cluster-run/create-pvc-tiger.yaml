@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tradmodels-pvc
+  namespace: refit-release
+spec:
+  accessModes:
+    - ReadWriteMany           # Set as needed (ReadWriteOnce, ReadOnlyMany, ReadWriteMany)
+  resources:
+    requests:
+      storage: 100Gi          # Specify the amount of storage needed
+  volumeMode: Filesystem      # Typically either Filesystem or Block
+
+

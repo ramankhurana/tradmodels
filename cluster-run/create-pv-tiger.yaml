@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tradmodels-pv
+spec:
+  capacity:
+    storage: 100Gi # Adjust the size according to your needs
+  accessModes:
+    - ReadWriteMany
+  storageClassName: refit
+  hostPath:
+    path: /mnt-gluster/all-data/khurana/dataset-tradmodels/dataset
+
+  persistentVolumeReclaimPolicy: Retain

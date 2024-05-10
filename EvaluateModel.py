@@ -24,12 +24,25 @@ class EvaluateModel:
         self.model = self.load_model(model_name)
         self.dataset = dataset_name
         
+        
         self.predictions=None
         self.mse_scores=None
         self.aggregate_mse=None
         self.consolidated_mse=None
 
-        self.results_dir = f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/{model_name}'
+        #print ("dataset path in  Eval: ", self.dataset_info["dataset_path"], self.get_path_till_dataset(self.dataset_info["dataset_path"]), self.dataset_config.run_environment)
+        print (f'This job is running in {self.dataset_config.run_environment} environment')
+        
+        if self.dataset_config.run_environment == "local":
+            self.results_base_dir = 'results/'
+        else:
+            self.results_base_dir = self.get_path_till_dataset(self.dataset_info["dataset_path"])
+
+        
+        self.results_dir = f'{self.results_base_dir}/{model_name}'
+
+        #self.results_base_dir = '/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/'
+        #self.results_dir = f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/{model_name}'
         
         if not os.path.exists(self.results_dir):
             os.makedirs(self.results_dir)
@@ -56,7 +69,7 @@ class EvaluateModel:
             np.save(os.path.join(self.results_dir, f'{column}.npy'), prediction.values())
 
     def save_results_to_csv(self):
-        results_path = f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
+        results_path = f'{self.results_base_dir}/results.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
         results_data = {
             'Model': [self.model],
             'Dataset': [self.dataset],
@@ -72,6 +85,14 @@ class EvaluateModel:
         for col, mse in self.mse_scores.items():
             print(f"MSE for {col}: {mse}")
         print ("consolidated_mse: ",self.consolidated_mse )
+
+    def get_path_till_dataset(self, full_path):
+        parts = full_path.split(os.sep)
+        # Find the index of 'dataset' and slice the list up to and including this index
+        if 'dataset' in parts:
+            dataset_index = parts.index('dataset') + 1
+            return os.sep.join(parts[:dataset_index])
+        return None
 
 # Usage example
 if __name__ == "__main__":

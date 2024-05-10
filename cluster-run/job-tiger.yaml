@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tradmodels-job
+  namespace: refit-release
+spec:
+  template:
+    metadata:
+      labels:
+        app: tradmodels
+    spec:
+      nodeSelector:
+         refit: enabled
+      serviceAccountName: refit
+      containers:
+        - name: tradmodels
+          image: ramankhurana/tradmodels:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "11Gi"
+              cpu: "3"
+            limits:
+              memory: "12Gi"
+              cpu: "4"
+          volumeMounts:
+            - name: dataset-volume
+              mountPath: /mnt-gluster/all-data/khurana/dataset-tradmodels/dataset
+
+      volumes:
+        - name: dataset-volume
+          persistentVolumeClaim:
+            claimName: tradmodels-pvc
+        - name: dshm
+          emptyDir:
+            medium: Memory
+            sizeLimit: "3Gi"
+      restartPolicy: Never
+  backoffLimit: 0
