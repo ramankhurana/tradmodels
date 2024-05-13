@@ -16,6 +16,10 @@ spec:
         - name: tradmodels
           image: ramankhurana/tradmodels:latest
           imagePullPolicy: Always
+	  ## override the command in dockerfile
+          command: ["/bin/sh", "-c"]  # Use shell to interpret the command
+          args:
+            - "python EvaluateModel.py --dataset=TEMPLATE_DATASET_NAME --model=TEMPLATE_MODEL_NAME"
           resources:
             requests:
               memory: "11Gi"

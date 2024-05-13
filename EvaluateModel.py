@@ -5,6 +5,8 @@ import os
 import numpy as np
 import argparse
 import pandas as pd
+
+
 def parseargs():
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--dataset', type=str, required=True, help='The name of the dataset to use')
@@ -12,7 +14,7 @@ def parseargs():
     args = parser.parse_args()
     dataset = args.dataset
     model = args.model
-    
+    return (dataset, model)
 
 
 
@@ -96,8 +98,8 @@ class EvaluateModel:
 
 # Usage example
 if __name__ == "__main__":
-    parseargs()
-    evaluator = EvaluateModel('datasetschema.yaml', 'runschema.yaml', 'ETTh2', 'ARIMA')
+    (dataset, model) = parseargs()
+    evaluator = EvaluateModel('datasetschema.yaml', 'runschema.yaml', dataset, model)
     evaluator.evaluate()
     evaluator.save_predictions()
     evaluator.save_results_to_csv()
