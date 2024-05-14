@@ -29,10 +29,10 @@ datasets:
 
   ETTm1:
     name: "ETTm1"
-    date_col: "timestamp"
-    train: ["2020-01", "2020-06"]
-    test: ["2020-07", "2020-08"]
-    val: ["2020-09", "2020-10"]
+    date_col: "date"
+    train: ["2016-01", "2017-06"]
+    test: ["2017-07", "2017-08"]
+    val: ["2017-09", "2017-10"]
     lag: 12
     horizon: 3
     dataset_path: "{{ base_path }}/ETTm1.csv"
