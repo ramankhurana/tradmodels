@@ -1,7 +1,7 @@
 #!/bin/bash
 templateyaml=cluster-run/job-tiger.yaml
 # Define datasets and models
-declare -a datasets=("ETTh1" "ETTh2" "ETTm1")
+declare -a datasets=("ETTh1" "ETTh2" "ETTm1 ETTm2")
 declare -a models=("ARIMA")
 
 # Loop through datasets and models
