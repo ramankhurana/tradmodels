@@ -12,7 +12,7 @@ datasets:
     train: ["2016-01", "2017-06"]
     test: ["2017-07", "2017-08"]
     val: ["2017-09", "2017-10"]
-    lag: 24
+    lag: 72
     horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
@@ -22,7 +22,7 @@ datasets:
     train: ["2016-01", "2017-06"]
     test: ["2017-07", "2017-08"]
     val: ["2017-09", "2017-10"]
-    lag: 36
+    lag: 96
     horizon: 3
     dataset_path: "{{ base_path[run_environment] }}/ETTh2.csv"
 
@@ -34,7 +34,7 @@ datasets:
     test: ["2017-07", "2017-08"]
     val: ["2017-09", "2017-10"]
     lag: 48
-    horizon: 3
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/ETTm1.csv"
 
 
@@ -44,8 +44,8 @@ datasets:
     train: ["2016-01", "2017-06"]
     test: ["2017-07", "2017-08"]
     val: ["2017-09", "2017-10"]
-    lag: 60
-    horizon: 3
+    lag: 96
+    horizon: 96
     dataset_path: "{{ base_path[run_environment] }}/ETTm2.csv"
 
 
