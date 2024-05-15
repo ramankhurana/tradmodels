@@ -25,7 +25,7 @@ class EvaluateModel:
         self.dataset_info = self.dataset_config.get_dataset_info(dataset_name)
         self.model = self.load_model(model_name)
         self.dataset = dataset_name
-        
+        self.model_name = model_name
         
         self.predictions=None
         self.mse_scores=None
@@ -73,8 +73,10 @@ class EvaluateModel:
     def save_results_to_csv(self):
         results_path = f'{self.results_base_dir}/results.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
         results_data = {
-            'Model': [self.model],
+            'Model': [self.model_name],
             'Dataset': [self.dataset],
+            'Lag': [self.dataset_info['lag']],
+            'Horizon': [self.dataset_info['horizon']],
             'Consolidated MSE': [self.consolidated_mse]
         }
         df = pd.DataFrame(results_data)
