@@ -6,6 +6,7 @@ import numpy as np
 import argparse
 import pandas as pd
 
+from BaseModel import BaseModel
 
 def parseargs():
     parser = argparse.ArgumentParser(description='Process some integers.')
@@ -63,8 +64,9 @@ class EvaluateModel:
         if not self.model:
             raise Exception("Model is not initialized or not found.")
         self.model.load_data()
-        self.predictions, self.mse_scores, self.aggregate_mse, self.consolidated_mse = self.model.fit_predict()
-
+        #self.predictions, self.mse_scores, self.aggregate_mse, self.consolidated_mse = self.model.fit_predict()
+        self.predictions, self.mse_scores, self.aggregate_mse, self.consolidated_mse = self.model.rolling_window_evaluation()
+        
 
     def save_predictions(self):
         for column, prediction in self.predictions.items():
