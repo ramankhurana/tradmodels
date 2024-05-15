@@ -30,11 +30,19 @@ spec:
           volumeMounts:
             - name: dataset-volume
               mountPath: /mnt-gluster/all-data/khurana/dataset-tradmodels/dataset
+            - name: config-volume
+              mountPath: /usr/src/app/tradmodels/datasetschema.yaml
+              subPath: datasetschema.yaml
 
       volumes:
         - name: dataset-volume
           persistentVolumeClaim:
             claimName: tradmodels-pvc
+
+        - name: config-volume
+          configMap:
+            name: datasetschema-config
+
         - name: dshm
           emptyDir:
             medium: Memory

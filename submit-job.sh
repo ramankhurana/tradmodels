@@ -1,7 +1,13 @@
 #!/bin/bash
+
+## config map needs to be created before submitting the job.
+## one config map is needed for a scan, or setup environment variables
+kubectl create configmap datasetschema-config --from-file=datasetschema.yaml -n refit-release
+
 templateyaml=cluster-run/job-tiger.yaml
 # Define datasets and models
-declare -a datasets=("ETTh1" "ETTh2" "ETTm1 ETTm2")
+#declare -a datasets=("ETTh1" "ETTh2" "ETTm1 ETTm2")
+declare -a datasets=("ETTh1")
 declare -a models=("ARIMA")
 
 # Loop through datasets and models

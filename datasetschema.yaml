@@ -1,4 +1,4 @@
-run_environment: "tiger"  # Change this to "cloud" tor "tiger" when running in the cloud environment
+run_environment: "local"  # Change this to "cloud" tor "tiger" when running in the cloud environment
 
 base_path: 
   local: "/Users/raman/JupyterNotebooks/Comparison_Multivariate/dataset"
@@ -12,8 +12,8 @@ datasets:
     train: ["2016-01", "2017-06"]
     test: ["2017-07", "2017-08"]
     val: ["2017-09", "2017-10"]
-    lag: 72
-    horizon: 6
+    lag: 4
+    horizon: 1
     dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
   ETTh2:

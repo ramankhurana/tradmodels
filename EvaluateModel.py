@@ -38,7 +38,7 @@ class EvaluateModel:
         if self.dataset_config.run_environment == "local":
             self.results_base_dir = 'results/'
         else:
-            self.results_base_dir = self.get_path_till_dataset(self.dataset_info["dataset_path"])
+            self.results_base_dir = self.get_path_till_dataset(self.dataset_info["dataset_path"])  ## there should be results dir appended here 
 
         
         self.results_dir = f'{self.results_base_dir}/{model_name}'
