@@ -14,9 +14,20 @@ class ARIMAModel(BaseModel):
         all_predicted = []
         self.lag = self.dataset_info['lag']
         self.horizon = self.dataset_info['horizon']
+
+        train_start,train_end=self.dataset_info["train"]
+        val_start,val_end=self.dataset_info["val"]
+
+                
+        
         for column in self.usable_cols:
             series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], column)
-            train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
+            #train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
+
+            # Splitting based on indices rather than dates
+            train = series[:train_end + 1]  # includes the train_end index
+            test = series[val_end + 1:]  # starts just after train_end
+
 
             model = ARIMA(p=self.dataset_info['lag'])
             model.fit(train)
@@ -47,6 +58,9 @@ class ARIMAModel(BaseModel):
     def rolling_window_evaluation(self):
         self.lag = self.dataset_info['lag']
         self.horizon = self.dataset_info['horizon']
+        train_start,train_end=self.dataset_info["train"]
+        val_start,val_end=self.dataset_info["val"]
+        
         results = {}
         mse_scores = {}
         all_actuals = []
@@ -54,8 +68,12 @@ class ARIMAModel(BaseModel):
 
         # Split data into train and test based on predefined dates (can be set in dataset_info)
         series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'])
-        train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
-
+        #train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
+        
+        # Splitting based on indices rather than dates
+        train = series[:train_end + 1]  # includes the train_end index
+        test = series[val_end + 1:]  # starts just after train_end
+            
         # Loop over each usable column
         for column in self.usable_cols:
             train_series = train[column]
