@@ -12,16 +12,16 @@ datasets:
     train: [0,8460]
     val: [8544,11520]
     test: [11424,11400]
-    lag: 6
-    horizon: 2
+    lag: 96
+    horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
   ETTh2:
     name: "ETTh2"
     date_col: "date"
-    train: ["2016-01", "2017-06"]
-    test: ["2017-07", "2017-08"]
-    val: ["2017-09", "2017-10"]
+    train: [0,8460]
+    val: [8544,11520]
+    test: [11424,11400]
     lag: 96
     horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/ETTh2.csv"
@@ -30,9 +30,9 @@ datasets:
   ETTm1:
     name: "ETTm1"
     date_col: "date"
-    train: ["2016-01", "2017-06"]
-    test: ["2017-07", "2017-08"]
-    val: ["2017-09", "2017-10"]
+    train: [0,34560]
+    val: [34464,46080]
+    test: [45984,57600]
     lag: 96
     horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/ETTm1.csv"
@@ -41,9 +41,9 @@ datasets:
   ETTm2:
     name: "ETTm2"
     date_col: "date"
-    train: ["2016-01", "2017-06"]
-    test: ["2017-07", "2017-08"]
-    val: ["2017-09", "2017-10"]
+    train: [0,34560]
+    val: [34464,46080]
+    test: [45984,57600]
     lag: 96
     horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/ETTm2.csv"
@@ -51,77 +51,71 @@ datasets:
 
   Electricity:
     name: "Electricity"
-    date_col: "datetime"
-    train: ["2018-01", "2018-06"]
-    test: ["2018-07", "2018-08"]
-    val: ["2018-09", "2018-10"]
-    lag: 24
+    date_col: "date"
+    train: [0,18412]
+    val: [18316,21044]
+    test: [20948,26304]
+    lag: 96
     horizon: 6
-    dataset_path: "{{ base_path }}/electricity.csv"
-    cloud_path: "{{ cloud_base_path }}/electricity.csv"
+    dataset_path: "{{ base_path[run_environment] }}/electricity.csv"
 
   Exchange:
     name: "Exchange"
     date_col: "date"
-    train: ["2019-01", "2019-06"]
-    test: ["2019-07", "2019-08"]
-    val: ["2019-09", "2019-10"]
-    lag: 12
-    horizon: 3
-    dataset_path: "{{ base_path }}/exchange_rate.csv"
-    cloud_path: "{{ cloud_base_path }}/exchange_rate.csv"
+    train: [0,5311]
+    val: [5215,6071]
+    test: [5975,7588]
+    lag: 96
+    horizon: 6
+    dataset_path: "{{ base_path[run_environment] }}/exchange_rate.csv"
 
   Weather:
     name: "Weather"
     date_col: "date"
-    train: ["2019-01", "2019-06"]
-    test: ["2019-07", "2019-08"]
-    val: ["2019-09", "2019-10"]
-    lag: 12
-    horizon: 3
-    dataset_path: "{{ base_path }}/weather.csv"
-    cloud_path: "{{ cloud_base_path }}/weather.csv"
+    train: [0,36887]
+    val: [36791,42157]
+    test: [42061,53696]
+    lag: 96
+    horizon: 6
+    dataset_path: "{{ base_path[run_environment] }}/weather.csv"
 
   Illness:
     name: "Illness"
     date_col: "date"
-    train: ["2019-01", "2019-06"]
-    test: ["2019-07", "2019-08"]
-    val: ["2019-09", "2019-10"]
-    lag: 12
-    horizon: 3
-    dataset_path: "{{ base_path }}/national_illness.csv"
-    cloud_path: "{{ cloud_base_path }}/national_illness.csv"
+    train: [0,676]
+    val: [640,773]
+    test: [737,966]
+    lag: 36
+    horizon: 6
+    dataset_path: "{{ base_path[run_environment] }}/national_illness.csv"    
 
   Divvy:
     name: "Divvy"
     date_col: "date"
-    train: ["2019-01", "2019-06"]
-    test: ["2019-07", "2019-08"]
-    val: ["2019-09", "2019-10"]
-    lag: 12
-    horizon: 3
-    dataset_path: "{{ base_path }}/divvy.csv"
-    cloud_path: "{{ cloud_base_path }}/divvy.csv"
+    train: [0,0]
+    val: [0,0]
+    test: [0,0]
+    lag: 96
+    horizon: 6
+    dataset_path: "{{ base_path[run_environment] }}/divvy.csv"    
 
   M5:
     name: "M5"
     date_col: "date"
-    train: ["2019-01", "2019-06"]
-    test: ["2019-07", "2019-08"]
-    val: ["2019-09", "2019-10"]
-    lag: 12
-    horizon: 3
-    dataset_path: "{{ base_path }}/m5.csv"
-    cloud_path: "{{ cloud_base_path }}/m5.csv"
+    train: [0,0]
+    val: [0,0]
+    test: [0,0]
+    lag: 96
+    horizon: 6
+    dataset_path: "{{ base_path[run_environment] }}/m5.csv"        
 
   Dilliards:
     name: "Dilliards"
     date_col: "date"
-    train: ["2019-01", "2019-06"]
-    test: ["2019-07", "2019-08"]
-    val: ["2019-09", "2019-10"]
-    lag: 12
-    horizon: 3
-    dataset_path: "{{ base_path }}/dilliards.csv"
-    cloud_path: "{{ cloud_base_path }}/dilliards.csv"
+    train: [0,0]
+    val: [0,0]
+    test: [0,0]
+    lag: 96
+    horizon: 6
+    dataset_path: "{{ base_path[run_environment] }}/dilliards.csv"
+
