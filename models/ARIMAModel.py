@@ -85,6 +85,7 @@ class ARIMAModel(BaseModel):
             
         # Loop over each usable column
         for column in self.usable_cols:
+            print ("column name", column)
             train_series = train[column]
             test_series = test[column]
             model = ARIMA(p=self.lag)
