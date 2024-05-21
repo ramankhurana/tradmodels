@@ -15,9 +15,12 @@ class ARIMAModel(BaseModel):
         self.lag = self.dataset_info['lag']
         self.horizon = self.dataset_info['horizon']
 
-        train_start,train_end=self.dataset_info["train"]
-        val_start,val_end=self.dataset_info["val"]
-
+        ## from yaml file
+        #train_start,train_end=self.dataset_info["train"]
+        #val_start,val_end=self.dataset_info["val"]
+        
+        train_start,train_end=self.train_
+        val_start,val_end=self.val_
                 
         
         for column in self.usable_cols:
@@ -58,9 +61,15 @@ class ARIMAModel(BaseModel):
     def rolling_window_evaluation(self):
         self.lag = self.dataset_info['lag']
         self.horizon = self.dataset_info['horizon']
-        train_start,train_end=self.dataset_info["train"]
-        val_start,val_end=self.dataset_info["val"]
+
+        ## from yaml file
+        #train_start,train_end=self.dataset_info["train"]
+        #val_start,val_end=self.dataset_info["val"]
+
         
+        train_start,train_end=self.train_
+        val_start,val_end=self.val_
+
         results = {}
         mse_scores = {}
         all_actuals = []
@@ -85,6 +94,9 @@ class ARIMAModel(BaseModel):
             column_actuals = []
             column_forecasts = []
 
+            #print ("num_windows ", num_windows)
+            #print ("mean train, test: ",column, train_series.mean(axis=0).pd_dataframe().iloc[0, 0], test_series.mean(axis=0).pd_dataframe().iloc[0, 0])
+            
             # Perform rolling window predictions
             for start in range(num_windows):
                 end = start + self.horizon
@@ -109,3 +121,5 @@ class ARIMAModel(BaseModel):
         consolidated_mse = mean_squared_error(all_actuals, all_forecasts)
 
         return results, mse_scores, aggregate_mse, consolidated_mse
+
+

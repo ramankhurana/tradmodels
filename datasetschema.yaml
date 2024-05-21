@@ -9,11 +9,14 @@ datasets:
   ETTh1:
     name: "ETTh1"
     date_col: "date"
-    train: [0,8460]
-    val: [8544,11520]
-    test: [11424,11400]
-    lag: 96
-    horizon: 6
+    #train: [0,8640]
+    #val: [8545,11521]
+    #test: [11424,11400]
+    #train: [0,12194]
+    #val: [12098,13936]
+    #test: [13840,17420]
+    lag: 2
+    horizon: 1
     dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
   ETTh2:
