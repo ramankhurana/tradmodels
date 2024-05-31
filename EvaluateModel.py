@@ -56,6 +56,7 @@ class EvaluateModel:
             model_module = importlib.import_module("models."+model_name + 'Model')
             # Dynamically create an instance of the model class
             model_class = getattr(model_module, model_name + 'Model')
+            print ("model_class: ", model_class)
             return model_class(self.dataset_info)
         except (ImportError, AttributeError) as e:
             raise ImportError(f"Model class {model_name + 'Model'} could not be loaded: {e}")
@@ -69,11 +70,14 @@ class EvaluateModel:
         
 
     def save_predictions(self):
-        for column, prediction in self.predictions.items():
-            np.save(os.path.join(self.results_dir, f'{column}.npy'), prediction.values())
+        if self.model_name == "TimeGPT":
+            np.save(os.path.join(self.results_dir, f'{self.model_name}.npy'), self.predictions["TimeGPT"].values)
+        else:
+            for column, prediction in self.predictions.items():
+                np.save(os.path.join(self.results_dir, f'{column}.npy'), prediction.values())
 
     def save_results_to_csv(self):
-        results_path = f'{self.results_base_dir}/results_v01.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
+        results_path = f'{self.results_base_dir}/results_v03.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
         results_data = {
             'Model': [self.model_name],
             'Dataset': [self.dataset],
@@ -88,10 +92,13 @@ class EvaluateModel:
             df.to_csv(results_path, index=False)
     
     def printresults(self):
-        for col, mse in self.mse_scores.items():
-            print(f"MSE for {col}: {mse}")
-        print ("consolidated_mse: ",self.consolidated_mse )
-
+        if self.model_name=="TimeGPT":
+            print ("consolidated_mse: ",self.consolidated_mse)
+        else:
+            for col, mse in self.mse_scores.items():
+                print(f"MSE for {col}: {mse}")
+            print ("consolidated_mse: ",self.consolidated_mse )
+  
     def get_path_till_dataset(self, full_path):
         parts = full_path.split(os.sep)
         # Find the index of 'dataset' and slice the list up to and including this index

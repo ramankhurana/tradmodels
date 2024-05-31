@@ -29,9 +29,9 @@ runschema:
       - M5
       - Dilliards
 
-  AutoARIMA:
+  TimeGPT:
     validate: false
-    runmodel: false
+    runmodel: true
     dataset:
       - ETTh1
       - ETTh2

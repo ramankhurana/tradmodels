@@ -21,7 +21,7 @@ class BaseModel:
         self.data = pd.read_csv(self.dataset_info['dataset_path'])
 
         ## get the time boundaries for train, val, test
-        splitter = DataSplitter(len(self.data), self.dataset_info['name']  )
+        splitter = DataSplitter(len(self.data), self.dataset_info['name'] , self.dataset_info['lag'] )
         self.train_, self.val_, self.test_ = splitter.get_train_val_test_ranges()
         #print (self.train_, self.val_, self.test_)
         
@@ -42,6 +42,10 @@ class BaseModel:
         #train_mask = (self.data[self.dataset_info['date_col']] >= train_start) & \
         #    (self.data[self.dataset_info['date_col']] <= train_end)
 
+
+        ## before fitting let's remove duplicates first
+        self.data = self.data.drop_duplicates(subset=[self.dataset_info['date_col']], keep='first')
+
         # Fit the scaler on training data only using iloc for row indexing
         self.scaler.fit(self.data.iloc[train_start:train_end + 1][self.usable_cols])
 
@@ -51,3 +55,28 @@ class BaseModel:
         # Apply the scaler to all the data
         self.data[self.usable_cols] = self.scaler.transform(self.data[self.usable_cols])
 
+
+
+    def deflate_dataframe(self, df):
+        """
+        Transform a wide format DataFrame to a long format DataFrame where each row 
+        represents a single time point for each ID.
+        
+        Parameters:
+        df (pd.DataFrame): DataFrame to transform. Expected to have 'date' and other columns 
+                       where each column name after 'date' represents a unique ID.
+    
+        Returns:
+        pd.DataFrame: Transformed DataFrame in long format with columns 'unique_id', 'ds' (date), and 'y' (values).
+        """
+        # Ensure the date column is in the correct format (optional but recommended)
+        df['date'] = pd.to_datetime(df['date'])
+        
+        # Melting the DataFrame
+        # 'id_vars' is the column(s) to keep (not melt), everything else is considered a value var
+        melted_df = df.melt(id_vars=['date'], var_name='unique_id', value_name='y')
+        
+        # Renaming the columns to match your output specification
+        melted_df = melted_df.rename(columns={'date': 'ds'})
+        
+        return melted_df

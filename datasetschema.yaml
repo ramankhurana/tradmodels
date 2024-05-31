@@ -15,8 +15,8 @@ datasets:
     #train: [0,12194]
     #val: [12098,13936]
     #test: [13840,17420]
-    lag: 2
-    horizon: 1
+    lag: 96
+    horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
   ETTh2:
@@ -57,7 +57,7 @@ datasets:
     date_col: "date"
     train: [0,18412]
     val: [18316,21044]
-    test: [20948,26304]
+    test: [20996,26304]
     lag: 96
     horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/electricity.csv"
@@ -88,7 +88,7 @@ datasets:
     train: [0,676]
     val: [640,773]
     test: [737,966]
-    lag: 36
+    lag: 96
     horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/national_illness.csv"    
 

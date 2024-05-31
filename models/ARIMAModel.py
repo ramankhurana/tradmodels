@@ -24,7 +24,8 @@ class ARIMAModel(BaseModel):
                 
         
         for column in self.usable_cols:
-            series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], column)
+            series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], column,
+                                               fill_missing_dates=True, freq='10T')
             #train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
 
             # Splitting based on indices rather than dates
@@ -69,14 +70,14 @@ class ARIMAModel(BaseModel):
         
         train_start,train_end=self.train_
         val_start,val_end=self.val_
-
+        
         results = {}
         mse_scores = {}
         all_actuals = []
         all_forecasts = []
 
         # Split data into train and test based on predefined dates (can be set in dataset_info)
-        series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'])
+        series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], fill_missing_dates=True, freq='10T')
         #train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
         
         # Splitting based on indices rather than dates
