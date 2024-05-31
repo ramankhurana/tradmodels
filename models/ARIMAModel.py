@@ -21,6 +21,7 @@ class ARIMAModel(BaseModel):
         
         train_start,train_end=self.train_
         val_start,val_end=self.val_
+        test_start,test_end=self.test_
                 
         
         for column in self.usable_cols:
@@ -70,26 +71,34 @@ class ARIMAModel(BaseModel):
         
         train_start,train_end=self.train_
         val_start,val_end=self.val_
-        
+        test_start,test_end=self.test_
+
         results = {}
         mse_scores = {}
         all_actuals = []
         all_forecasts = []
-
+        
         # Split data into train and test based on predefined dates (can be set in dataset_info)
-        series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], fill_missing_dates=True, freq='10T')
+        series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], fill_missing_dates=True) #, freq='10T')
         #train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
         
         # Splitting based on indices rather than dates
-        train = series[:train_end + 1]  # includes the train_end index
-        test = series[val_end + 1:]  # starts just after train_end
-            
+        ''' following is likley buggy when compared to TimeGPT or others'''
+        #train = series[:train_end + 1]  # includes the train_end index
+        #test = series[val_end + 1:]  # starts just after train_end
+
+        '''this is the fixed one; to be tested'''
+        train = series[:val_end + 1]  ## train should include the validation as well otherwise there is unseen data which is equal to val data length. 
+        test = series[test_start + 1:] 
+        
         # Loop over each usable column
         for column in self.usable_cols:
             print ("column name", column)
             train_series = train[column]
             test_series = test[column]
             model = ARIMA(p=self.lag)
+            #print ("size of train series: ", len(train_series))
+            #print(train_series)
             model.fit(train_series)
 
             num_windows = len(test_series) - self.horizon + 1
