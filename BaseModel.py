@@ -19,6 +19,13 @@ class BaseModel:
     def load_data(self):
         #self.data = pd.read_csv(self.dataset_info['cloud_path'])
         self.data = pd.read_csv(self.dataset_info['dataset_path'])
+        print (self.data.shape)
+        if self.dataset_info["name"] == "M5":
+            # Generate a date range
+            date_range = pd.date_range(start='2011-01-28', end='2016-04-23')
+            print (date_range.shape)
+            self.data['date'] = date_range
+            
 
         ## get the time boundaries for train, val, test
         splitter = DataSplitter(len(self.data), self.dataset_info['name'] , self.dataset_info['lag'] )
