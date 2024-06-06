@@ -3,6 +3,8 @@ from sklearn.preprocessing import StandardScaler
 from darts import TimeSeries
 
 import sys
+from ForecastMetrics import ForecastMetrics
+
 #sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.Print_time_boundaries import DataSplitter
 
@@ -16,10 +18,12 @@ class BaseModel:
         self.val_=None
         self.test_=None
         
+        self.metrics = None
+        self.cons_metrics = None
     def load_data(self):
         #self.data = pd.read_csv(self.dataset_info['cloud_path'])
         self.data = pd.read_csv(self.dataset_info['dataset_path'])
-        print (self.data.shape)
+        
         if self.dataset_info["name"] == "M5":
             # Generate a date range
             date_range = pd.date_range(start='2011-01-28', end='2016-04-23')
@@ -43,25 +47,25 @@ class BaseModel:
         #train_start, train_end = self.dataset_info['train'] ## using yaml 
         train_start, train_end = self.train_  ## by passing yaml to ease the book-keeping 
         print (type(train_start), train_end)
-
+        
         
         
         #train_mask = (self.data[self.dataset_info['date_col']] >= train_start) & \
         #    (self.data[self.dataset_info['date_col']] <= train_end)
-
-
+        
+        
         ## before fitting let's remove duplicates first
         self.data = self.data.drop_duplicates(subset=[self.dataset_info['date_col']], keep='first')
-
+        
         # Fit the scaler on training data only using iloc for row indexing
         self.scaler.fit(self.data.iloc[train_start:train_end + 1][self.usable_cols])
-
+        
         # Fit the scaler on training data only
         #self.scaler.fit(self.data.loc[train_mask, self.usable_cols])
-
+        
         # Apply the scaler to all the data
         self.data[self.usable_cols] = self.scaler.transform(self.data[self.usable_cols])
-        print (self.data)
+        #print ("------", self.data)
 
 
 

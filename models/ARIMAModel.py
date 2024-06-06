@@ -4,8 +4,10 @@ from darts import TimeSeries
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
-
+from ForecastMetrics import ForecastMetrics
 class ARIMAModel(BaseModel):
+
+    
     
     def fit_predict(self):
         results = {}
@@ -26,14 +28,15 @@ class ARIMAModel(BaseModel):
         
         for column in self.usable_cols:
             series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], column,
-                                               fill_missing_dates=True, freq='10T')
+                                               fill_missing_dates=True)# , freq='10T')
             #train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
 
             # Splitting based on indices rather than dates
             train = series[:train_end + 1]  # includes the train_end index
             test = series[val_end + 1:]  # starts just after train_end
 
-
+            print ("----------------------",train.shape, test.shape)
+            
             model = ARIMA(p=self.dataset_info['lag'])
             model.fit(train)
             prediction = model.predict(len(test))
@@ -96,7 +99,7 @@ class ARIMAModel(BaseModel):
             print ("column name", column)
             train_series = train[column]
             test_series = test[column]
-            model = ARIMA(p=self.lag)
+            model = ARIMA(p=self.lag, d=1)
             #print ("size of train series: ", len(train_series))
             #print(train_series)
             model.fit(train_series)
@@ -120,7 +123,13 @@ class ARIMAModel(BaseModel):
                 column_actuals.extend(actual_values)
                 column_forecasts.extend(predicted_values)
 
-            mse = mean_squared_error(column_actuals, column_forecasts)
+            self.metrics = ForecastMetrics(column_actuals, column_forecasts,column_actuals, column_forecasts)
+            
+            print ("metric calculation using the class: ", self.metrics.normalised_metrics()) 
+            
+            #mse = mean_squared_error(column_actuals, column_forecasts)
+            metrics_ = self.metrics.normalised_metrics()
+            mse = metrics_["MSE"]
             print ("mse:", mse)
             mse_scores[column] = mse
             results[column] = prediction
@@ -129,7 +138,10 @@ class ARIMAModel(BaseModel):
             all_forecasts.extend(column_forecasts)
 
         aggregate_mse = np.mean(list(mse_scores.values()))
-        consolidated_mse = mean_squared_error(all_actuals, all_forecasts)
+        #consolidated_mse = mean_squared_error(all_actuals, all_forecasts)
+        self.cons_metrics = ForecastMetrics(all_actuals, all_forecasts,all_actuals, all_forecasts)
+        cons_metrics_ = self.cons_metrics.normalised_metrics()
+        consolidated_mse = cons_metrics_["MSE"] 
 
         return results, mse_scores, aggregate_mse, consolidated_mse
 

@@ -16,7 +16,7 @@ datasets:
     #val: [12098,13936]
     #test: [13840,17420]
     lag: 12
-    horizon: 720
+    horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
   ETTh2:
@@ -99,7 +99,7 @@ datasets:
     #val: [0,0]
     #test: [0,0]
     lag: 12
-    horizon: 720
+    horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/DivvyBikes/df2021-8-9-10_VAR_nextdayAshrdata.csv"    
 
   M5:
@@ -109,7 +109,7 @@ datasets:
     #val: [0,0]
     #test: [0,0]
     lag: 12
-    horizon: 720
+    horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/M5/sales_1000_Random_columns.csv"        
 
   Dilliards:
@@ -119,6 +119,6 @@ datasets:
     val: [0,0]
     test: [0,0]
     lag: 12
-    horizon: 720
+    horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/dilliards.csv"
 

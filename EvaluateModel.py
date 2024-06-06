@@ -57,6 +57,7 @@ class EvaluateModel:
             # Dynamically create an instance of the model class
             model_class = getattr(model_module, model_name + 'Model')
             print ("model_class: ", model_class)
+            ''' this is the return statement which initialise the model class ''' 
             return model_class(self.dataset_info)
         except (ImportError, AttributeError) as e:
             raise ImportError(f"Model class {model_name + 'Model'} could not be loaded: {e}")
