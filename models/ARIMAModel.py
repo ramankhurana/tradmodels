@@ -139,10 +139,13 @@ class ARIMAModel(BaseModel):
 
         aggregate_mse = np.mean(list(mse_scores.values()))
         #consolidated_mse = mean_squared_error(all_actuals, all_forecasts)
+
+        ''' scale the original and forecasted back to un-normalised values '''
+        unnormalised = all_actuals, all_forecasts
         self.cons_metrics = ForecastMetrics(all_actuals, all_forecasts,all_actuals, all_forecasts)
         cons_metrics_ = self.cons_metrics.normalised_metrics()
         consolidated_mse = cons_metrics_["MSE"] 
 
-        return results, mse_scores, aggregate_mse, consolidated_mse
+        return results, mse_scores, aggregate_mse, consolidated_mse, cons_metrics_
 
 

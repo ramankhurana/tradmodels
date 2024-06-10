@@ -38,7 +38,9 @@ class BaseModel:
         
         self.data[self.dataset_info['date_col']] = pd.to_datetime(self.data[self.dataset_info['date_col']])
         self.usable_cols = list(set(self.data.columns) - {self.dataset_info['date_col']})
-
+        self.usable_cols.sort()
+        ''' this sorting is needed to make sure that the order is always same''' 
+        
         if self.scale_data:
             self.apply_scaling()
 
@@ -56,7 +58,8 @@ class BaseModel:
         
         ## before fitting let's remove duplicates first
         self.data = self.data.drop_duplicates(subset=[self.dataset_info['date_col']], keep='first')
-        
+
+        print (self.usable_cols)
         # Fit the scaler on training data only using iloc for row indexing
         self.scaler.fit(self.data.iloc[train_start:train_end + 1][self.usable_cols])
         
@@ -67,7 +70,9 @@ class BaseModel:
         self.data[self.usable_cols] = self.scaler.transform(self.data[self.usable_cols])
         #print ("------", self.data)
 
-
+    def apply_unscaling(self, all_actuals, all_forecasts):
+        return 0
+        
 
     def deflate_dataframe(self, df):
         """

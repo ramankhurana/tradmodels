@@ -67,7 +67,7 @@ class EvaluateModel:
             raise Exception("Model is not initialized or not found.")
         self.model.load_data()
         #self.predictions, self.mse_scores, self.aggregate_mse, self.consolidated_mse = self.model.fit_predict()
-        self.predictions, self.mse_scores, self.aggregate_mse, self.consolidated_mse = self.model.rolling_window_evaluation()
+        self.predictions, self.mse_scores, self.aggregate_mse, self.consolidated_mse, self.metrics = self.model.rolling_window_evaluation()
         
 
     def save_predictions(self):
@@ -78,14 +78,19 @@ class EvaluateModel:
                 np.save(os.path.join(self.results_dir, f'{column}.npy'), prediction.values())
 
     def save_results_to_csv(self):
-        results_path = f'{self.results_base_dir}/results_v03.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
+        results_path = f'{self.results_base_dir}/results_v04.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
         results_data = {
             'Model': [self.model_name],
             'Dataset': [self.dataset],
             'Lag': [self.dataset_info['lag']],
             'Horizon': [self.dataset_info['horizon']],
-            'Consolidated MSE': [self.consolidated_mse]
+            'Consolidated MSE': [self.consolidated_mse],
+            'MAE':[self.metrics["MAE"]],
+            'MASE':[self.metrics["MASE"]],
+            'ZI-MAE':[self.metrics["ZI-MAE"]],
+            'ZI-MSE':[self.metrics["ZI-MSE"]]
         }
+        
         df = pd.DataFrame(results_data)
         if os.path.exists(results_path):
             df.to_csv(results_path, mode='a', header=False, index=False)
