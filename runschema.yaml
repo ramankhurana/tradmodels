@@ -13,6 +13,23 @@ runschema:
       - Divvy
       - M5
       - Dilliards
+
+  AR:
+    validate: false
+    runmodel: true
+    dataset: *basedataset
+    mask:
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+
   ARIMA:
     validate: false
     runmodel: true

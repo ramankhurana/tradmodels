@@ -15,12 +15,12 @@ class ForecastMetrics:
         return np.sum(np.square(diff)) / n 
     
     def mape(self):
-        return mean_absolute_percentage_error(self.y_true, self.y_pred)
+        return mean_absolute_percentage_error(self.y_true_orig, self.y_pred_orig)
     
     def smape(self):
-        n = len(self.y_true)
-        errors = np.abs(self.y_true - self.y_pred)
-        denominator = (np.abs(self.y_true) + np.abs(self.y_pred)) / 2
+        n = len(self.y_true_orig)
+        errors = np.abs(self.y_true_orig - self.y_pred_orig)
+        denominator = (np.abs(self.y_true_orig) + np.abs(self.y_pred_orig)) / 2
         smape = np.sum(errors / denominator) * (1. / n)
         return smape
     
@@ -39,14 +39,14 @@ class ForecastMetrics:
         return mase
     
     def zi_mape(self):
-        n = len(self.y_true)
-        errors = np.where(self.y_true != 0, np.abs((self.y_true - self.y_pred) / self.y_true), np.abs(self.y_pred))
+        n = len(self.y_true_orig)
+        errors = np.where(self.y_true_orig != 0, np.abs((self.y_true_orig - self.y_pred_orig) / self.y_true_orig), np.abs(self.y_pred_orig))
         zi_mape = np.sum(errors) / n
         return zi_mape
     
     def zi_smape(self):
-        n = len(self.y_true)
-        errors = np.where(self.y_true != 0, (np.abs(self.y_true - self.y_pred) * 2) / (np.abs(self.y_true) + np.abs(self.y_pred)), np.abs(self.y_pred))
+        n = len(self.y_true_orig)
+        errors = np.where(self.y_true_orig != 0, (np.abs(self.y_true_orig - self.y_pred_orig) * 2) / (np.abs(self.y_true_orig) + np.abs(self.y_pred_orig)), np.abs(self.y_pred_orig))
         zi_smape = np.sum(errors) / n
         return zi_smape
     

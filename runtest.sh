@@ -1,4 +1,4 @@
-sed -i '' 's/horizon: 6/horizon: 12/' datasetschema.yaml
+sed -i '' 's/horizon: 336/horizon: 720/' datasetschema.yaml
 python EvaluateModel.py --dataset=ETTh1 --model=TimeGPT
 python EvaluateModel.py --dataset=ETTh2 --model=TimeGPT
 python EvaluateModel.py --dataset=ETTm1 --model=TimeGPT

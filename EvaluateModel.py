@@ -78,7 +78,7 @@ class EvaluateModel:
                 np.save(os.path.join(self.results_dir, f'{column}.npy'), prediction.values())
 
     def save_results_to_csv(self):
-        results_path = f'{self.results_base_dir}/results_v04.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
+        results_path = f'{self.results_base_dir}/results_v05.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
         results_data = {
             'Model': [self.model_name],
             'Dataset': [self.dataset],
@@ -88,7 +88,13 @@ class EvaluateModel:
             'MAE':[self.metrics["MAE"]],
             'MASE':[self.metrics["MASE"]],
             'ZI-MAE':[self.metrics["ZI-MAE"]],
-            'ZI-MSE':[self.metrics["ZI-MSE"]]
+            'ZI-MSE':[self.metrics["ZI-MSE"]],
+            'MAPE':[self.metrics['MAPE']],
+            'SMAPE':[self.metrics['SMAPE']],
+            'ZI-MAPE':[self.metrics['ZI-MAPE']],
+            'ZI-SMAPE':[self.metrics['ZI-SMAPE']]
+            #'':[self.metrics['']]
+            
         }
         
         df = pd.DataFrame(results_data)

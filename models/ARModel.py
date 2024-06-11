@@ -1,3 +1,10 @@
+'''
+The difference between AR and ARIMA is only differencing at this moment.
+AR = ARIMA(lag,d=0)
+ARIMA = ARIMA(lag,d=1)
+in both cases MA is turned off for the moment as it was not improving the MSE score for a few datasets I tried, ETT and Divvy 
+'''
+
 from BaseModel import BaseModel
 from darts.models import ARIMA
 from darts import TimeSeries
@@ -5,10 +12,8 @@ from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
 from ForecastMetrics import ForecastMetrics
-class ARIMAModel(BaseModel):
+class ARModel(BaseModel):
 
-    
-    
     def fit_predict(self):
         results = {}
         mse_scores = {}
@@ -37,7 +42,8 @@ class ARIMAModel(BaseModel):
 
             print ("----------------------",train.shape, test.shape)
             
-            model = ARIMA(p=self.dataset_info['lag'])
+            model = ARIMA(p=self.dataset_info['lag'],
+                          d=0)
             model.fit(train)
             prediction = model.predict(len(test))
 
@@ -99,7 +105,8 @@ class ARIMAModel(BaseModel):
             print ("column name", column)
             train_series = train[column]
             test_series = test[column]
-            model = ARIMA(p=self.lag, d=1)
+            model = ARIMA(p=self.lag,
+                          d=0)
             #print ("size of train series: ", len(train_series))
             #print(train_series)
             model.fit(train_series)
@@ -125,7 +132,7 @@ class ARIMAModel(BaseModel):
 
             self.metrics = ForecastMetrics(column_actuals, column_forecasts,column_actuals, column_forecasts)
             
-
+            print ("metric calculation using the class: ", self.metrics.normalised_metrics()) 
             
             #mse = mean_squared_error(column_actuals, column_forecasts)
             metrics_ = self.metrics.normalised_metrics()
@@ -134,12 +141,6 @@ class ARIMAModel(BaseModel):
             mse_scores[column] = mse
             results[column] = prediction
 
-            '''
-            df_actuals = self.widen_dataframe(column_actuals, self.usable_cols)
-            print ("column actuals: ----------")
-            print (df_actuals)
-            '''
-            
             all_actuals.extend(column_actuals)
             all_forecasts.extend(column_forecasts)
 
@@ -147,25 +148,9 @@ class ARIMAModel(BaseModel):
         #consolidated_mse = mean_squared_error(all_actuals, all_forecasts)
 
         ''' scale the original and forecasted back to un-normalised values '''
-        
         unnormalised = all_actuals, all_forecasts
-        df_all_actuals = self.widen_and_rescale_dataframe(all_actuals, self.usable_cols)
-        df_all_forecasts = self.widen_and_rescale_dataframe(all_forecasts, self.usable_cols)
-        
-        print ("all actuals: ----------")
-        print (df_all_actuals.tail())
-
-        print ("all forecasts: ----------")
-        print (df_all_forecasts.tail())
-        
-        
-        
-        self.cons_metrics = ForecastMetrics(all_actuals, all_forecasts,df_all_actuals.values, df_all_forecasts.values)
-        cons_metrics_ = self.cons_metrics.calculate_all_metrics()
-
-        print ("metric calculation using the class: ", cons_metrics_ )
-        #cons_metrics_ = self.cons_metrics.normalised_metrics()
-        #cons_metrics_unscaled = self.cons_metrics.unnormalised_metrics()
+        self.cons_metrics = ForecastMetrics(all_actuals, all_forecasts,all_actuals, all_forecasts)
+        cons_metrics_ = self.cons_metrics.normalised_metrics()
         consolidated_mse = cons_metrics_["MSE"] 
 
         return results, mse_scores, aggregate_mse, consolidated_mse, cons_metrics_

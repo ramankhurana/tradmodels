@@ -70,8 +70,6 @@ class BaseModel:
         self.data[self.usable_cols] = self.scaler.transform(self.data[self.usable_cols])
         #print ("------", self.data)
 
-    def apply_unscaling(self, all_actuals, all_forecasts):
-        return 0
         
 
     def deflate_dataframe(self, df):
@@ -97,3 +95,55 @@ class BaseModel:
         melted_df = melted_df.rename(columns={'date': 'ds'})
         
         return melted_df
+
+
+
+    def widen_and_rescale_dataframe(self, value_list, column_names, rescale=True):
+        stacked_df = pd.DataFrame({
+            'value': value_list})
+        
+        num_columns = len(column_names)
+        rows_per_column = len(stacked_df) / num_columns
+
+        if (num_columns * rows_per_column) != len(stacked_df):
+            raise ValueError ("the num_columns * rows_per_column does not match with the stacked dataframw size, check the shape of each one of these before running again")
+        
+        deflated_data = {}
+        
+        for i, col_name in enumerate(column_names):
+            start_idx = int(i * rows_per_column)
+            end_idx = int(start_idx + rows_per_column)
+            deflated_data[col_name] = stacked_df['value'].iloc[start_idx:end_idx].values
+        
+        deflated_df = pd.DataFrame(deflated_data)
+        if rescale:
+            deflated_df = pd.DataFrame ( self.scaler.inverse_transform(deflated_df)  ,
+                                         columns = column_names
+                                        )
+        return deflated_df
+
+
+    def rescale_dataframe(self, value_list, column_names, rescale=True):
+        stacked_df = pd.DataFrame({
+            'value': value_list})
+        
+        num_columns = len(column_names)
+        rows_per_column = len(stacked_df) / num_columns
+
+        if (num_columns * rows_per_column) != len(stacked_df):
+            raise ValueError ("the num_columns * rows_per_column does not match with the stacked dataframw size, check the shape of each one of these before running again")
+        
+        deflated_data = {}
+        
+        for i, col_name in enumerate(column_names):
+            start_idx = int(i * rows_per_column)
+            end_idx = int(start_idx + rows_per_column)
+            deflated_data[col_name] = stacked_df['value'].iloc[start_idx:end_idx].values
+        
+        deflated_df = pd.DataFrame(deflated_data)
+        
+        deflated_df = pd.DataFrame ( self.scaler.inverse_transform(deflated_df)  ,
+                                     columns = column_names
+                                    )
+        return deflated_df
+    
