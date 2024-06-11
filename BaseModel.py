@@ -20,6 +20,13 @@ class BaseModel:
         
         self.metrics = None
         self.cons_metrics = None
+
+        ''' following are common for all models '''
+        self.lag = self.dataset_info['lag']
+        self.horizon = self.dataset_info['horizon']
+        
+        ''' common variable list over '''
+        
     def load_data(self):
         #self.data = pd.read_csv(self.dataset_info['cloud_path'])
         self.data = pd.read_csv(self.dataset_info['dataset_path'])
@@ -34,7 +41,8 @@ class BaseModel:
         ## get the time boundaries for train, val, test
         splitter = DataSplitter(len(self.data), self.dataset_info['name'] , self.dataset_info['lag'] )
         self.train_, self.val_, self.test_ = splitter.get_train_val_test_ranges()
-        #print (self.train_, self.val_, self.test_)
+
+        
         
         self.data[self.dataset_info['date_col']] = pd.to_datetime(self.data[self.dataset_info['date_col']])
         self.usable_cols = list(set(self.data.columns) - {self.dataset_info['date_col']})
