@@ -15,8 +15,8 @@ datasets:
     #train: [0,12194]
     #val: [12098,13936]
     #test: [13840,17420]
-    lag: 96
-    horizon: 12
+    lag: 12
+    horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
   ETTh2:
@@ -26,7 +26,7 @@ datasets:
     val: [8544,11520]
     test: [11424,11400]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/ETTh2.csv"
 
 
@@ -37,7 +37,7 @@ datasets:
     val: [34464,46080]
     test: [45984,57600]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/ETTm1.csv"
 
 
@@ -48,7 +48,7 @@ datasets:
     val: [34464,46080]
     test: [45984,57600]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/ETTm2.csv"
 
 
@@ -59,7 +59,7 @@ datasets:
     val: [18316,21044]
     test: [20996,26304]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/electricity.csv"
 
   Exchange:
@@ -69,7 +69,7 @@ datasets:
     val: [5215,6071]
     test: [5975,7588]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/exchange_rate.csv"
 
   Weather:
@@ -79,7 +79,7 @@ datasets:
     val: [36791,42157]
     test: [42061,53696]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/weather.csv"
 
   Illness:
@@ -89,7 +89,7 @@ datasets:
     val: [640,773]
     test: [737,966]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/national_illness.csv"    
 
   Divvy:
@@ -99,7 +99,7 @@ datasets:
     #val: [0,0]
     #test: [0,0]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/DivvyBikes/df2021-8-9-10_VAR_nextdayAshrdata.csv"    
 
   M5:
@@ -109,7 +109,7 @@ datasets:
     #val: [0,0]
     #test: [0,0]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/M5/sales_1000_Random_columns.csv"        
 
   Dilliards:
@@ -119,6 +119,6 @@ datasets:
     val: [0,0]
     test: [0,0]
     lag: 96
-    horizon: 12
+    horizon: 24
     dataset_path: "{{ base_path[run_environment] }}/dilliards.csv"
 

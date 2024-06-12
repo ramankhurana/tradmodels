@@ -29,9 +29,8 @@ class ARIMAModel(BaseModel):
         for column in self.usable_cols:
             series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], column,
                                                fill_missing_dates=True)# , freq='10T')
-            #train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
 
-            # Splitting based on indices rather than dates
+            
             train = series[:train_end + 1]  # includes the train_end index
             test = series[val_end + 1:]  # starts just after train_end
 
@@ -64,10 +63,6 @@ class ARIMAModel(BaseModel):
 
 
     def rolling_window_evaluation(self):
-        #self.lag = self.dataset_info['lag']
-        #self.horizon = self.dataset_info['horizon']
-
-        
         train_start,train_end=self.train_
         val_start,val_end=self.val_
         test_start,test_end=self.test_
@@ -80,30 +75,47 @@ class ARIMAModel(BaseModel):
         # Split data into train and test based on predefined dates (can be set in dataset_info)
         series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], fill_missing_dates=True) #, freq='10T')
         
-        train = series[:val_end + 1]  ## train should include the validation as well otherwise there is unseen data which is equal to val data length. 
-        test = series[test_start + 1:] 
-        
         # Loop over each usable column
         for column in self.usable_cols:
             print ("column name", column)
-            train_series = train[column]
-            test_series = test[column]
-            model = ARIMA(p=self.lag, d=1)
-            
-            model.fit(train_series)
 
-            num_windows = len(test_series) - self.horizon + 1
+            
+            num_windows = (test_end-test_start) - self.horizon + 1
+            step_size = self.getStepSize(num_windows)
+            print ("num_windows,step_size: ", num_windows,step_size)
+            
             column_actuals = []
             column_forecasts = []
             
             # Perform rolling window predictions
             for start in range(num_windows):
+
+                if ( (self.dataset_info['name'] == "Illness") and (start % 10 !=0)  ) or  (start % step_size != 0)  :
+                    continue
+
+                
+                train = series[:val_end + 1 + start]   
+                test = series[test_start + 1 + start:]
+
+                print ("train.shape, test.shape", train.n_samples, train.n_timesteps, train.n_components )
+                
+                train_series = train[column]
+                test_series = test[column]
+
+                model = ARIMA(p=self.lag, d=1)
+                model.fit(train_series)
+                
+                prediction = model.predict(self.horizon)
+                predicted_values = prediction.values().flatten()
+
+                
                 end = start + self.horizon
                 test_slice = test_series[start:end]
-
-                prediction = model.predict(self.horizon)
                 actual_values = test_slice.values().flatten()
-                predicted_values = prediction.values().flatten()
+
+                print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- prediction", predicted_values)
+                print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- actuals", actual_values)
+                
 
                 column_actuals.extend(actual_values)
                 column_forecasts.extend(predicted_values)

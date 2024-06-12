@@ -145,12 +145,14 @@ class TimeGPTModel(BaseModel):
                 train_long_df = self.deflate_dataframe(train_df[-600:])
                 
             if self.dataset_info['name']=="M5":
-                train_long_df = self.deflate_dataframe(train_df[-400:])
+                train_long_df = self.deflate_dataframe(train_df[-300:])
                 
             else:
                 train_long_df = self.deflate_dataframe(train_df[-1000:])
 
-            
+
+            print ("size of train_long_df: ", train_long_df.shape)
+            print ("tail of df: ",train_long_df.tail)
             # Perform forecasting with TimeGPT
             forecasted_values = self.timegpt.forecast(df=train_long_df, h=self.horizon,
                                                  model='timegpt-1-long-horizon',

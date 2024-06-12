@@ -155,3 +155,23 @@ class BaseModel:
                                     )
         return deflated_df
     
+    def getStepSize(self,num_windows):
+
+        step_size = 50
+
+        if num_windows>=500:
+            step_size = 25 + int( (num_windows-500 )*0.05 )
+        if num_windows>=400 and num_windows < 500:
+            step_size = 20
+        if num_windows>=300 and num_windows < 400:
+            step_size = 15
+        if num_windows>=200 and num_windows < 300:
+            step_size = 10
+        if num_windows>=100 and num_windows < 200:
+            step_size = 5
+        if num_windows>=50 and  num_windows < 100:
+            step_size = 3
+        if num_windows < 50:
+            step_size = 1
+
+        return step_size

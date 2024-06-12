@@ -14,6 +14,8 @@ import numpy as np
 from ForecastMetrics import ForecastMetrics
 class ARModel(BaseModel):
 
+    
+    
     def fit_predict(self):
         results = {}
         mse_scores = {}
@@ -70,12 +72,8 @@ class ARModel(BaseModel):
 
 
     def rolling_window_evaluation(self):
-        self.lag = self.dataset_info['lag']
-        self.horizon = self.dataset_info['horizon']
-
-        ## from yaml file
-        #train_start,train_end=self.dataset_info["train"]
-        #val_start,val_end=self.dataset_info["val"]
+        #self.lag = self.dataset_info['lag']
+        #self.horizon = self.dataset_info['horizon']
 
         
         train_start,train_end=self.train_
@@ -89,14 +87,7 @@ class ARModel(BaseModel):
         
         # Split data into train and test based on predefined dates (can be set in dataset_info)
         series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], fill_missing_dates=True) #, freq='10T')
-        #train, test = series.split_after(pd.Timestamp(self.dataset_info['test'][0]))
         
-        # Splitting based on indices rather than dates
-        ''' following is likley buggy when compared to TimeGPT or others'''
-        #train = series[:train_end + 1]  # includes the train_end index
-        #test = series[val_end + 1:]  # starts just after train_end
-
-        '''this is the fixed one; to be tested'''
         train = series[:val_end + 1]  ## train should include the validation as well otherwise there is unseen data which is equal to val data length. 
         test = series[test_start + 1:] 
         
@@ -107,16 +98,12 @@ class ARModel(BaseModel):
             test_series = test[column]
             model = ARIMA(p=self.lag,
                           d=0)
-            #print ("size of train series: ", len(train_series))
-            #print(train_series)
+            
             model.fit(train_series)
 
             num_windows = len(test_series) - self.horizon + 1
             column_actuals = []
             column_forecasts = []
-
-            #print ("num_windows ", num_windows)
-            #print ("mean train, test: ",column, train_series.mean(axis=0).pd_dataframe().iloc[0, 0], test_series.mean(axis=0).pd_dataframe().iloc[0, 0])
             
             # Perform rolling window predictions
             for start in range(num_windows):
@@ -132,7 +119,7 @@ class ARModel(BaseModel):
 
             self.metrics = ForecastMetrics(column_actuals, column_forecasts,column_actuals, column_forecasts)
             
-            print ("metric calculation using the class: ", self.metrics.normalised_metrics()) 
+
             
             #mse = mean_squared_error(column_actuals, column_forecasts)
             metrics_ = self.metrics.normalised_metrics()
@@ -140,7 +127,7 @@ class ARModel(BaseModel):
             print ("mse:", mse)
             mse_scores[column] = mse
             results[column] = prediction
-
+            
             all_actuals.extend(column_actuals)
             all_forecasts.extend(column_forecasts)
 
@@ -148,9 +135,14 @@ class ARModel(BaseModel):
         #consolidated_mse = mean_squared_error(all_actuals, all_forecasts)
 
         ''' scale the original and forecasted back to un-normalised values '''
+        
         unnormalised = all_actuals, all_forecasts
-        self.cons_metrics = ForecastMetrics(all_actuals, all_forecasts,all_actuals, all_forecasts)
-        cons_metrics_ = self.cons_metrics.normalised_metrics()
+        df_all_actuals = self.widen_and_rescale_dataframe(all_actuals, self.usable_cols)
+        df_all_forecasts = self.widen_and_rescale_dataframe(all_forecasts, self.usable_cols)
+        
+        
+        self.cons_metrics = ForecastMetrics(all_actuals, all_forecasts,df_all_actuals.values, df_all_forecasts.values)
+        cons_metrics_ = self.cons_metrics.calculate_all_metrics()
         consolidated_mse = cons_metrics_["MSE"] 
 
         return results, mse_scores, aggregate_mse, consolidated_mse, cons_metrics_
