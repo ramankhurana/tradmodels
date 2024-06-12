@@ -46,6 +46,7 @@ class BaseModel:
         
         self.data[self.dataset_info['date_col']] = pd.to_datetime(self.data[self.dataset_info['date_col']])
         self.usable_cols = list(set(self.data.columns) - {self.dataset_info['date_col']})
+        #self.usable_cols = ["OT", "HUFL"]
         self.usable_cols.sort()
         ''' this sorting is needed to make sure that the order is always same''' 
         

@@ -107,8 +107,8 @@ class EvaluateModel:
         if self.model_name=="TimeGPT":
             print ("consolidated_mse: ",self.consolidated_mse)
         else:
-            for col, mse in self.mse_scores.items():
-                print(f"MSE for {col}: {mse}")
+            #for col, mse in self.mse_scores.items():
+            #    print(f"MSE for {col}: {mse}")
             print ("consolidated_mse: ",self.consolidated_mse )
   
     def get_path_till_dataset(self, full_path):
@@ -124,6 +124,6 @@ if __name__ == "__main__":
     (dataset, model) = parseargs()
     evaluator = EvaluateModel('datasetschema.yaml', 'runschema.yaml', dataset, model)
     evaluator.evaluate()
-    evaluator.save_predictions()
+    #evaluator.save_predictions()
     evaluator.save_results_to_csv()
     evaluator.printresults()

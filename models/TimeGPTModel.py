@@ -133,7 +133,7 @@ class TimeGPTModel(BaseModel):
 
         
             if ( (self.dataset_info['name'] == "Illness") and (start % 10 !=0)  ) or  (start % step_size != 0)  :
-                print ("start: ", start)
+                #print ("start: ", start)
                 continue 
             train_df =  df[:val_end + 1+start] 
             test_df =  df[test_start + 1+start:]
@@ -180,7 +180,7 @@ class TimeGPTModel(BaseModel):
             ## this has to be done within the loop such that for each iteration it is converted to dataframe and can be concat later on. 
             df_predicted = self.widen_and_rescale_dataframe(forecasted_values["TimeGPT"].values, self.usable_cols)
             df_actuals   = self.widen_and_rescale_dataframe(actual_values["y"].values,  self.usable_cols)
-
+            
             df_actual_list.append(df_actuals)
             df_predicted_list.append(df_predicted)
             
