@@ -79,7 +79,7 @@ class ARIMAModel(BaseModel):
         for column in self.usable_cols:
             print ("column name", column)
 
-            
+            print ("train_start,train_end,val_start,val_end,test_start,test_end: ",train_start,train_end,val_start,val_end,test_start,test_end)
             num_windows = (test_end-test_start) - self.horizon + 1
             step_size = self.getStepSize(num_windows)
             print ("num_windows,step_size: ", num_windows,step_size)
@@ -93,11 +93,11 @@ class ARIMAModel(BaseModel):
                 if ( (self.dataset_info['name'] == "Illness") and (start % 10 !=0)  ) or  (start % step_size != 0)  :
                     continue
 
-                
+                print ("start, test_start + 1 + start ", start, test_start + 1 + start)
                 train = series[:val_end + 1 + start]   
                 test = series[test_start + 1 + start:]
 
-                print ("train.shape, test.shape", train.n_samples, train.n_timesteps, train.n_components )
+                print ("train.shape, test.shape", train.n_samples, train.n_timesteps, train.n_components, test.n_samples, test.n_timesteps, test.n_components )
                 
                 train_series = train[column]
                 test_series = test[column]
@@ -110,7 +110,7 @@ class ARIMAModel(BaseModel):
 
                 
                 end = start + self.horizon
-                test_slice = test_series[start:end]
+                test_slice = test_series[:self.horizon]
                 actual_values = test_slice.values().flatten()
 
                 print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- prediction", predicted_values)
