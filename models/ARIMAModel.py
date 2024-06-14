@@ -117,6 +117,7 @@ class ARIMAModel(BaseModel):
                 print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- prediction", predicted_values)
                 print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- actuals", actual_values)
                 
+
                 if len (actual_values) != self.horizon:
                     continue
                 column_actuals.extend(actual_values)

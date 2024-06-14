@@ -63,12 +63,14 @@ class ARModel(BaseModel):
 
                 
                 end = start + self.horizon
-                test_slice = test_series[start:end]
+                test_slice = test_series[:self.horizon]
                 actual_values = test_slice.values().flatten()
 
                 print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- prediction", predicted_values)
                 print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- actuals", actual_values)
-                
+
+                if len (actual_values) != self.horizon:
+                    continue
 
                 column_actuals.extend(actual_values)
                 column_forecasts.extend(predicted_values)
