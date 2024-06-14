@@ -1,12 +1,18 @@
 import numpy as np
+import pandas as pd
 from sklearn.metrics import mean_absolute_percentage_error
 
 class ForecastMetrics:
     def __init__(self, y_true, y_pred,y_true_orig, y_pred_orig):
         self.y_true = np.array(y_true)
         self.y_pred = np.array(y_pred)
-        self.y_true_orig = y_true_orig # data before normalisation 
-        self.y_pred_orig = y_pred_orig # data before normalisation 
+        print ("type()", type(y_true_orig))
+        if isinstance(y_true_orig, np.ndarray):
+            self.y_true_orig = y_true_orig # data before normalisation 
+            self.y_pred_orig = y_pred_orig # data before normalisation
+        elif isinstance(y_true_orig, pd.core.frame.DataFrame):
+            self.y_true_orig = y_true_orig.values.flatten()
+            self.y_pred_orig = y_pred_orig.values.flatten()
         
     def mse(self):
         n = len(self.y_true)
@@ -18,10 +24,12 @@ class ForecastMetrics:
         return mean_absolute_percentage_error(self.y_true_orig, self.y_pred_orig)
     
     def smape(self):
+        
         n = len(self.y_true_orig)
         errors = np.abs(self.y_true_orig - self.y_pred_orig)
         denominator = (np.abs(self.y_true_orig) + np.abs(self.y_pred_orig)) / 2
         smape = np.sum(errors / denominator) * (1. / n)
+        print ("smape: ", smape)
         return smape
     
     def mae(self):

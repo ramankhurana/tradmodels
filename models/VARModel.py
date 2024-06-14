@@ -67,15 +67,18 @@ class VARModel(BaseModel):
             
             
             end = start + self.horizon
-            test_slice = test[start:end]
+            test_slice = test[:self.horizon]
             actual_values = pd.DataFrame(test_slice.values(), columns=self.usable_cols)
             
-            print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- prediction", prediction.values)
-            print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- actuals", actual_values.values) 
+            #print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- prediction", prediction.values)
+            #print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- actuals", actual_values.values) 
             
             df_predicted_list.append(predicted_values)
             df_actual_list.append(actual_values)
-            
+
+            if len (actual_values) != self.horizon:
+                continue
+
             results[str(start)] = predicted_values.values
             
             self.metrics = ForecastMetrics(actual_values.values, predicted_values.values, actual_values.values, predicted_values.values )
@@ -93,14 +96,15 @@ class VARModel(BaseModel):
         aggregate_mse = np.mean(mse_scores)
         
         ''' need to fix this for scaled dataframe''' 
-        df_all_actuals = self.widen_and_rescale_dataframe(all_actuals, self.usable_cols)
-        df_all_forecasts = self.widen_and_rescale_dataframe(all_forecasts, self.usable_cols)
+        df_all_actuals = self.rescale_dataframe(all_actuals, self.usable_cols)
+        df_all_forecasts = self.rescale_dataframe(all_forecasts, self.usable_cols)
         
         
-        self.cons_metrics = ForecastMetrics(all_actuals, all_forecasts,all_actuals,all_forecasts)
+        self.cons_metrics = ForecastMetrics(all_actuals, all_forecasts,
+                                            df_all_actuals, df_all_forecasts)
         cons_metrics_ = self.cons_metrics.calculate_all_metrics()
         consolidated_mse = cons_metrics_["MSE"] 
-        
+        print ("cons_metrics_: ", cons_metrics_)
         return results, mse_scores, aggregate_mse, consolidated_mse, cons_metrics_
     
 

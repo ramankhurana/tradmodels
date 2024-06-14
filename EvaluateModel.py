@@ -78,6 +78,7 @@ class EvaluateModel:
                 np.save(os.path.join(self.results_dir, f'{column}.npy'), prediction.values())
 
     def save_results_to_csv(self):
+        print ("results: ", self.metrics)
         results_path = f'{self.results_base_dir}/results_v05.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
         results_data = {
             'Model': [self.model_name],

@@ -15,8 +15,8 @@ datasets:
     #train: [0,12194]
     #val: [12098,13936]
     #test: [13840,17420]
-    lag: 96
-    horizon: 720
+    lag: 6
+    horizon: 2
     dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
   ETTh2:

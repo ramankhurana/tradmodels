@@ -30,6 +30,7 @@ class BaseModel:
     def load_data(self):
         #self.data = pd.read_csv(self.dataset_info['cloud_path'])
         self.data = pd.read_csv(self.dataset_info['dataset_path'])
+        #[["OT","date","HULL"]]
         
         if self.dataset_info["name"] == "M5":
             # Generate a date range
@@ -132,29 +133,14 @@ class BaseModel:
         return deflated_df
 
 
-    def rescale_dataframe(self, value_list, column_names, rescale=True):
-        stacked_df = pd.DataFrame({
-            'value': value_list})
-        
-        num_columns = len(column_names)
-        rows_per_column = len(stacked_df) / num_columns
-
-        if (num_columns * rows_per_column) != len(stacked_df):
-            raise ValueError ("the num_columns * rows_per_column does not match with the stacked dataframw size, check the shape of each one of these before running again")
-        
-        deflated_data = {}
-        
-        for i, col_name in enumerate(column_names):
-            start_idx = int(i * rows_per_column)
-            end_idx = int(start_idx + rows_per_column)
-            deflated_data[col_name] = stacked_df['value'].iloc[start_idx:end_idx].values
-        
-        deflated_df = pd.DataFrame(deflated_data)
-        
-        deflated_df = pd.DataFrame ( self.scaler.inverse_transform(deflated_df)  ,
+    def rescale_dataframe(self, value_list, column_names):
+        df = value_list
+        print ("columns before rescaling: ", df.columns)
+        unscaled_df = pd.DataFrame ( self.scaler.inverse_transform(df)  ,
                                      columns = column_names
                                     )
-        return deflated_df
+        print ("columns after rescaling: ", type(unscaled_df))
+        return unscaled_df
     
     def getStepSize(self,num_windows):
 
@@ -175,4 +161,4 @@ class BaseModel:
         if num_windows < 50:
             step_size = 1
 
-        return step_size*2
+        return step_size*16
