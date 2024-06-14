@@ -88,8 +88,8 @@ datasets:
     train: [0,676]
     val: [640,773]
     test: [737,966]
-    lag: 24
-    horizon: 6
+    lag: 96
+    horizon: 720
     dataset_path: "{{ base_path[run_environment] }}/national_illness.csv"    
 
   Divvy:
@@ -108,8 +108,8 @@ datasets:
     #train: [0,0]
     #val: [0,0]
     #test: [0,0]
-    lag: 96
-    horizon: 720
+    lag: 24
+    horizon: 6
     dataset_path: "{{ base_path[run_environment] }}/M5/sales_1000_Random_columns.csv"        
 
   Dilliards:

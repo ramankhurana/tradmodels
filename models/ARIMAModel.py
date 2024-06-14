@@ -108,6 +108,7 @@ class ARIMAModel(BaseModel):
                 prediction = model.predict(self.horizon)
                 predicted_values = prediction.values().flatten()
 
+
                 
                 end = start + self.horizon
                 test_slice = test_series[:self.horizon]
@@ -116,7 +117,8 @@ class ARIMAModel(BaseModel):
                 print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- prediction", predicted_values)
                 print ("!!!!!!!!!!!!@@@@@@@@@@@@@@################  ------------------- actuals", actual_values)
                 
-
+                if len (actual_values) != self.horizon:
+                    continue
                 column_actuals.extend(actual_values)
                 column_forecasts.extend(predicted_values)
 
