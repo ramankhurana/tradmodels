@@ -108,6 +108,35 @@ class BaseModel:
 
 
 
+
+
+    def deflate_dataframe_NP(self, df):
+        """
+        This implementation is slighly different from deflate_dataframe becuase Neural Prophet need spefic column names and hence needs to be hard-coded 
+        Transform a wide format DataFrame to a long format DataFrame where each row 
+        represents a single time point for each ID.
+        
+        Parameters:
+        df (pd.DataFrame): DataFrame to transform. Expected to have 'date' and other columns 
+                       where each column name after 'date' represents a unique ID.
+    
+        Returns:
+        pd.DataFrame: Transformed DataFrame in long format with columns 'unique_id', 'ds' (date), and 'y' (values).
+        """
+        # Ensure the date column is in the correct format (optional but recommended)
+        df['date'] = pd.to_datetime(df['date'])
+        
+        # Melting the DataFrame
+        # 'id_vars' is the column(s) to keep (not melt), everything else is considered a value var
+        melted_df = df.melt(id_vars=['date'], var_name='ID', value_name='y')
+        
+        # Renaming the columns to match your output specification
+        melted_df = melted_df.rename(columns={'date': 'ds'})
+        
+        return melted_df
+
+
+
     def widen_and_rescale_dataframe(self, value_list, column_names, rescale=True):
         stacked_df = pd.DataFrame({
             'value': value_list})
@@ -133,9 +162,32 @@ class BaseModel:
         return deflated_df
 
 
+    def widen_dataframe(self, value_list, column_names, remove_lag=True, size=0):
+        stacked_df = value_list        
+        num_columns = len(column_names)
+        rows_per_column = len(stacked_df) / num_columns
+
+        if (num_columns * rows_per_column) != len(stacked_df):
+            raise ValueError ("the num_columns * rows_per_column does not match with the stacked dataframw size, check the shape of each one of these before running again")
+        
+        deflated_data = {}
+
+        for i, col_name in enumerate(column_names):
+            print ("column name: ", col_name)
+            deflated_data[col_name] = stacked_df[ (stacked_df['ID'] == col_name) ]["yhat1"].values
+            #print (deflated_data[col_name])
+            #print (type(deflated_data[col_name]))
+        deflated_df = pd.DataFrame(deflated_data)
+        
+        if remove_lag==True:
+            deflated_df = deflated_df[size:]
+            
+        return deflated_df
+    
+
     def rescale_dataframe(self, value_list, column_names):
         df = value_list
-        print ("columns before rescaling: ", df.columns)
+        print ("columns before rescaling: ", df.columns, df.shape)
         unscaled_df = pd.DataFrame ( self.scaler.inverse_transform(df)  ,
                                      columns = column_names
                                     )
@@ -161,4 +213,4 @@ class BaseModel:
         if num_windows < 50:
             step_size = 1
 
-        return step_size*16
+        return step_size*1

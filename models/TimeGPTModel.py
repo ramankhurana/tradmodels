@@ -178,7 +178,7 @@ class TimeGPTModel(BaseModel):
             all_actuals.extend(actual_values["y"].values)
             
             ## this has to be done within the loop such that for each iteration it is converted to dataframe and can be concat later on. 
-            df_predicted = self.widen_and_rescale_dataframe(forecasted_values["TimeGPT"].values, self.usable_cols)
+            df_predicted =self.widen_and_rescale_dataframe(forecasted_values["TimeGPT"].values, self.usable_cols)
             df_actuals   = self.widen_and_rescale_dataframe(actual_values["y"].values,  self.usable_cols)
             
             df_actual_list.append(df_actuals)

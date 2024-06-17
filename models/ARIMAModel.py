@@ -89,6 +89,7 @@ class ARIMAModel(BaseModel):
             
             # Perform rolling window predictions
             for start in range(num_windows):
+            #for start in range(1):
 
                 if ( (self.dataset_info['name'] == "Illness") and (start % 10 !=0)  ) or  (start % step_size != 0)  :
                     continue
