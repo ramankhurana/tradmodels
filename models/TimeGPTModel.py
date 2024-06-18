@@ -23,7 +23,7 @@ class TimeGPTModel(BaseModel):
     def __init__(self, dataset_info):
         super().__init__(dataset_info)
         
-        self.token = api_token # set in the backrc environmnet '8ffEwwwvGFnUuJYMygD4xeTZwzprSxlOtXzhnYwNHPvIc0PwP6KPSFTFUuJzxYjuScZa7s2YpOISVjKrVfoIrwAimKpOAwSA5cl1mZ03nwDGY8FfwhnLj4jwsTc55joRN7HqbYIfyeIQfLVqoYHfGl9etgLYw5PTwPK2abfSXnKozhqVN2Z99iFhO9TvcQQRtGzIWTDrsrsAFub1PYKAvTD4knk51C6dOD5MFNTCQNxmolLRBBrYzNfccIfDRaSL'  # Insert your actual TimeGPT token
+        self.token = api_token
         self.timegpt = TimeGPT(token=self.token)
         self.timegpt.validate_token()
         print ("token validated ")
