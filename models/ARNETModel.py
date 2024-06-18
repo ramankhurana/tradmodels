@@ -58,7 +58,7 @@ class ARNETModel(BaseModel):
                            #daily_seasonality=False,
             #n_lags=self.lag,
             n_forecasts=self.horizon,
-            trainer_config={"accelerator": "mps", "devices":1}
+            #trainer_config={"accelerator": "mps", "devices":1}
         )                                                                                                                                                                             
         print ("neural prophet instance created ")
         
