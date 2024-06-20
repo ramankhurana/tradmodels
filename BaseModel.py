@@ -213,4 +213,4 @@ class BaseModel:
         if num_windows < 50:
             step_size = 1
 
-        return step_size*1
+        return step_size*8

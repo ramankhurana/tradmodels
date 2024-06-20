@@ -64,6 +64,25 @@ runschema:
       - Dilliards
     mask: []
 
+
+  Chronos:
+    validate: false
+    runmodel: true
+    dataset:
+      - ETTh1
+      - ETTh2
+      - ETTm1
+      - ETTm2
+      - Traffic
+      - Electricity
+      - Exchange
+      - Weather
+      - Illness
+      - Divvy
+      - M5
+      - Dilliards
+    mask: []
+
   VAR:
     validate: false
     runmodel: false

@@ -7,8 +7,6 @@ import numpy as np
 from ForecastMetrics import ForecastMetrics
 class ARIMAModel(BaseModel):
 
-    
-    
     def fit_predict(self):
         results = {}
         mse_scores = {}
@@ -108,8 +106,7 @@ class ARIMAModel(BaseModel):
                 
                 prediction = model.predict(self.horizon)
                 predicted_values = prediction.values().flatten()
-
-
+                
                 
                 end = start + self.horizon
                 test_slice = test_series[:self.horizon]

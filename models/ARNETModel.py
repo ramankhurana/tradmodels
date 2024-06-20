@@ -61,7 +61,6 @@ class ARNETModel(BaseModel):
             #trainer_config={"accelerator": "mps", "devices":1}
         )                                                                                                                                                                             
         print ("neural prophet instance created ")
-        
         metrics = m.fit(train_long_df,validation_df=train_long_df,freq='auto',progress=None)
         
         print ("NP model fitted to train data")
