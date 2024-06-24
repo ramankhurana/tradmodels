@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y git
 # Clone repository from GitHub
 RUN git clone https://github.com/ramankhurana/tradmodels.git
 
+# Install Chronos from Amazon via pip using their github repo
+pip install git+https://github.com/amazon-science/chronos-forecasting.git
+
 # Change the working directory
 WORKDIR /usr/src/app/tradmodels
 
