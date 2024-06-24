@@ -13,14 +13,15 @@ RUN apt-get update && apt-get install -y git
 # Clone repository from GitHub
 RUN git clone https://github.com/ramankhurana/tradmodels.git
 
-# Install Chronos from Amazon via pip using their github repo
-RUN pip install git+https://github.com/amazon-science/chronos-forecasting.git
+
 
 # Change the working directory
 WORKDIR /usr/src/app/tradmodels
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+# Install Chronos from Amazon via pip using their github repo
+RUN pip install git+https://github.com/amazon-science/chronos-forecasting.git
 
 CMD ["python", "EvaluateModel.py","--dataset=ETTh1", "--model=ARIMA"]
 
