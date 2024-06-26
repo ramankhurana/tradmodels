@@ -61,10 +61,10 @@ class ChronosModel(BaseModel):
         test_df =  df[test_start:test_end]
         
 
-        train_col_list = [ torch.tensor(train_df[icol])  for icol in self.usable_cols]
+        #train_col_list = [ torch.tensor(train_df[icol])  for icol in self.usable_cols]
         #print ("train_col_list: ", train_col_list)
         
-        test_col_list  = [ torch.tensor(train_df[icol]) for icol in self.usable_cols]
+        #test_col_list  = [ torch.tensor(train_df[icol]) for icol in self.usable_cols]
         #print ("test_col_list: ", test_col_list)
 
         pipeline = ChronosPipeline.from_pretrained(
