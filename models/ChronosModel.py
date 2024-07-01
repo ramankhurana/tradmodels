@@ -69,7 +69,7 @@ class ChronosModel(BaseModel):
 
         pipeline = ChronosPipeline.from_pretrained(
             "amazon/chronos-t5-tiny",
-            #device_map="cuda",
+            device_map="cuda",
             #device_map="mps",
             torch_dtype=torch.bfloat16,
             
