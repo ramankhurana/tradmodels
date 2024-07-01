@@ -91,7 +91,7 @@ class ChronosModel(BaseModel):
             prediction_length = self.horizon
 
             #print ("type before forecast: ", type(context) )
-            forecast = pipeline.predict(context, prediction_length)
+            forecast = pipeline.predict(context, prediction_length, limit_prediction_length=False)
 
             #print ("forecast ", forecast)
             #print ("type(forecast): ", type(forecast), forecast.shape )
