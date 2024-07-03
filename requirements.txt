@@ -50,3 +50,4 @@ wrapt==1.15.0
 yfinance==0.2.32
 darts==0.29.0
 importlib-resources==6.1.0
+neuralprophet==0.8.0
