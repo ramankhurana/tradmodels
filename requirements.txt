@@ -26,7 +26,7 @@ networkx==3.1
 nolds==0.5.2
 numba==0.58.0
 numpy==1.24.4
-pandas==2.2.2
+pandas==1.5.3
 patool==1.12
 peewee==3.17.0
 Pillow==10.0.1
@@ -50,4 +50,3 @@ wrapt==1.15.0
 yfinance==0.2.32
 darts==0.29.0
 importlib-resources==6.1.0
-neuralprophet==0.8.0
