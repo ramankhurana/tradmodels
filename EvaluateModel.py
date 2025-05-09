@@ -8,6 +8,16 @@ import pandas as pd
 
 from BaseModel import BaseModel
 
+''' This function is to parse the arguments that are passed via commandline while runing this python script
+This needs two inputs; datasets and model: 
+1. Which dataset should be used for evaluation. 
+2. This needs the model for which evaluation needs to e performed.
+
+In addition to these init of class require two yaml files. 
+1. 'datasetschema.yaml': This has all details about each of the dataset
+2. 'runschema.yaml': This has all details on which datasets to run on evaluation
+
+''' 
 def parseargs():
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('--dataset', type=str, required=True, help='The name of the dataset to use')
@@ -18,13 +28,23 @@ def parseargs():
     return (dataset, model)
 
 
-
+'''
+This is the main class to do the evaluation. Note that only one dataset cna e evaluated for one model at a time. This is to ensure minimal reprocessing in case of errors during evaluation.
+This class need 4 inputs:
+1. dataset_file: this is yaml file
+2. model_file: this is yaml fiel
+3. dataset_name: name of the dataste
+4. model_name: name of the model 
+'''
 class EvaluateModel:
     def __init__(self, dataset_file, model_file, dataset_name, model_name):
         self.dataset_config = DatasetConfig(dataset_file)
         self.model_config = ModelConfig(model_file, model_name)
+
+        ## Get the dataset information 
         self.dataset_info = self.dataset_config.get_dataset_info(dataset_name)
         self.model = self.load_model(model_name)
+
         self.dataset = dataset_name
         self.model_name = model_name
         
@@ -37,9 +57,10 @@ class EvaluateModel:
         print (f'This job is running in {self.dataset_config.run_environment} environment')
         
         if self.dataset_config.run_environment == "local":
-            self.results_base_dir = 'results/'
+            self.results_base_dir = 'results2025/'
         else:
             self.results_base_dir = self.get_path_till_dataset(self.dataset_info["dataset_path"])  ## there should be results dir appended here 
+
 
         
         self.results_dir = f'{self.results_base_dir}/{model_name}'
@@ -50,6 +71,11 @@ class EvaluateModel:
         if not os.path.exists(self.results_dir):
             os.makedirs(self.results_dir)
 
+
+    ''' Load the model to be evaluated and create an instance for the model. For each model there is a dedicated class that is inherited from Base class name BaseModel.py
+    Note that the model is imported in the initization step to ensure it can be used in rest of the class  '''
+    
+    
     def load_model(self, model_name):
         try:
             # Dynamically import the model module based on the model_name provided
@@ -62,6 +88,11 @@ class EvaluateModel:
         except (ImportError, AttributeError) as e:
             raise ImportError(f"Model class {model_name + 'Model'} could not be loaded: {e}")
 
+    ''' This is to load the dataset the needs to be used for evaluation. 
+    self.model.load_data is a function implemented in BaseModel to avoid implementation for each model and dataset.
+    Just before evaluation, dataset is loaded and scaled (if scale flag is not set to false).
+    This also takes care of training or fitting the model like ARIMA if needed'''
+    
     def evaluate(self):
         if not self.model:
             raise Exception("Model is not initialized or not found.")
@@ -119,6 +150,7 @@ class EvaluateModel:
             dataset_index = parts.index('dataset') + 1
             return os.sep.join(parts[:dataset_index])
         return None
+
 
 # Usage example
 if __name__ == "__main__":

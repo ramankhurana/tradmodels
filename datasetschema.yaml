@@ -1,4 +1,4 @@
-run_environment: "local"  # Change this to "cloud" tor "tiger" when running in the cloud environment
+run_environment: "local"  # Change this to "cloud" or "tiger" when running in the cloud environment
 
 base_path: 
   local: "/Users/raman/JupyterNotebooks/Comparison_Multivariate/dataset"

@@ -47,7 +47,8 @@ class ARModel(BaseModel):
 
                 
                 train = series[:val_end + 1 + start]   
-                test = series[test_start + 1 + start:]
+                #test = series[test_start + 1 + start:]
+                test = series[test_start + 1 + start + self.lag:]
 
                 print ("train.shape, test.shape", train.n_samples, train.n_timesteps, train.n_components )
                 

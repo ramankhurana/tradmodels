@@ -73,7 +73,7 @@ class ARIMAModel(BaseModel):
         # Split data into train and test based on predefined dates (can be set in dataset_info)
         series = TimeSeries.from_dataframe(self.data, self.dataset_info['date_col'], fill_missing_dates=True) #, freq='10T')
         
-        # Loop over each usable column
+        # Loop over each usable column because that is how ARIMA works. 
         for column in self.usable_cols:
             print ("column name", column)
 
@@ -85,16 +85,18 @@ class ARIMAModel(BaseModel):
             column_actuals = []
             column_forecasts = []
             
-            # Perform rolling window predictions
+            # Perform rolling window predictions for each column i.e. each time series. 
             for start in range(num_windows):
             #for start in range(1):
 
                 if ( (self.dataset_info['name'] == "Illness") and (start % 10 !=0)  ) or  (start % step_size != 0)  :
                     continue
 
-                print ("start, test_start + 1 + start ", start, test_start + 1 + start)
+                print ("start, test_start + 1 + start+self.lag ", start, test_start + 1 + start + self.lag)
                 train = series[:val_end + 1 + start]   
-                test = series[test_start + 1 + start:]
+                # test = series[test_start + 1 + start:] ## this leads to data leakage. Forecasting horizon is already used in the training of ARIMA model. 
+                test = series[test_start + 1 + start + self.lag:]
+                
 
                 print ("train.shape, test.shape", train.n_samples, train.n_timesteps, train.n_components, test.n_samples, test.n_timesteps, test.n_components )
                 

@@ -79,7 +79,7 @@ class BaseModel:
         # Apply the scaler to all the data
         self.data[self.usable_cols] = self.scaler.transform(self.data[self.usable_cols])
         #print ("------", self.data)
-
+        
         
 
     def deflate_dataframe(self, df):
