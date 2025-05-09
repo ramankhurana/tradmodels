@@ -26,7 +26,7 @@ RUN pip install git+https://github.com/amazon-science/chronos-forecasting.git
 RUN pip install transformers
 
 # Download the Chronos T5 model using transformers CLI
-RUN python -c "from transformers import AutoModel; AutoModel.from_pretrained('amazon/chronos-t5-tiny')"
+###RUN python -c "from transformers import AutoModel; AutoModel.from_pretrained('amazon/chronos-t5-tiny')"
 
 
 CMD ["python", "EvaluateModel.py","--dataset=ETTh1", "--model=ARIMA"]
