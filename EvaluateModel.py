@@ -98,7 +98,8 @@ class EvaluateModel:
             raise Exception("Model is not initialized or not found.")
         self.model.load_data()
         #self.predictions, self.mse_scores, self.aggregate_mse, self.consolidated_mse = self.model.fit_predict()
-        self.predictions, self.mse_scores, self.aggregate_mse, self.consolidated_mse, self.metrics = self.model.rolling_window_evaluation()
+        #self.predictions, self.mse_scores, self.aggregate_mse, self.consolidated_mse, self.metrics = self.model.rolling_window_evaluation()
+        self.predictions, self.mse_scores, self.metrics = self.model.rolling_window_multi_horizon_evaluation() 
         
 
     def save_predictions(self):
@@ -108,32 +109,70 @@ class EvaluateModel:
             for column, prediction in self.predictions.items():
                 np.save(os.path.join(self.results_dir, f'{column}.npy'), prediction.values())
 
+    #def save_results_to_csv(self):
+    #    print ("results: ", self.metrics)
+    #    results_path = f'{self.results_base_dir}/results_v05.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
+    #    results_data = {
+    #        'Model': [self.model_name],
+    #        'Dataset': [self.dataset],
+    #        'Lag': [self.dataset_info['lag']],
+    #        'Horizon': [self.dataset_info['horizon']],
+    #        'Consolidated MSE': [self.consolidated_mse],
+    #        'MAE':[self.metrics["MAE"]],
+    #        'MASE':[self.metrics["MASE"]],
+    #        'ZI-MAE':[self.metrics["ZI-MAE"]],
+    #        'ZI-MSE':[self.metrics["ZI-MSE"]],
+    #        'MAPE':[self.metrics['MAPE']],
+    #        'SMAPE':[self.metrics['SMAPE']],
+    #        'ZI-MAPE':[self.metrics['ZI-MAPE']],
+    #        'ZI-SMAPE':[self.metrics['ZI-SMAPE']]
+    #        #'':[self.metrics['']]
+    #        
+    #    }
+    #    
+    #    df = pd.DataFrame(results_data)
+    #    if os.path.exists(results_path):
+    #        df.to_csv(results_path, mode='a', header=False, index=False)
+    #    else:
+    #        df.to_csv(results_path, index=False)
+    #
+
     def save_results_to_csv(self):
-        print ("results: ", self.metrics)
-        results_path = f'{self.results_base_dir}/results_v05.csv' # f'/mnt-gluster/all-data/khurana/dataset-tradmodels/dataset/results/results.csv'
-        results_data = {
-            'Model': [self.model_name],
-            'Dataset': [self.dataset],
-            'Lag': [self.dataset_info['lag']],
-            'Horizon': [self.dataset_info['horizon']],
-            'Consolidated MSE': [self.consolidated_mse],
-            'MAE':[self.metrics["MAE"]],
-            'MASE':[self.metrics["MASE"]],
-            'ZI-MAE':[self.metrics["ZI-MAE"]],
-            'ZI-MSE':[self.metrics["ZI-MSE"]],
-            'MAPE':[self.metrics['MAPE']],
-            'SMAPE':[self.metrics['SMAPE']],
-            'ZI-MAPE':[self.metrics['ZI-MAPE']],
-            'ZI-SMAPE':[self.metrics['ZI-SMAPE']]
-            #'':[self.metrics['']]
-            
-        }
+        print("Saving results for multiple horizons:", self.metrics)
+    
+        results_path = f'{self.results_base_dir}/results_v05.csv'
+        rows = []
+    
+        for horizon, metrics in self.metrics.items():
+            row = {
+                'Model': self.model_name,
+                'Dataset': self.dataset,
+                'Lag': self.dataset_info['lag'],
+                'Horizon': horizon,
+                'Consolidated MSE': metrics.get("MSE"),
+                'MAE': metrics.get("MAE"),
+                'MASE': metrics.get("MASE"),
+                'ZI-MAE': metrics.get("ZI-MAE"),
+                'ZI-MSE': metrics.get("ZI-MSE"),
+                'MAPE': metrics.get("MAPE"),
+                'SMAPE': metrics.get("SMAPE"),
+                'ZI-MAPE': metrics.get("ZI-MAPE"),
+                'ZI-SMAPE': metrics.get("ZI-SMAPE"),
+            }
+            rows.append(row)
+    
+        df = pd.DataFrame(rows)
+        # Append to CSV if file exists, otherwise create it
+        try:
+            existing = pd.read_csv(results_path)
+            df = pd.concat([existing, df], ignore_index=True)
+        except FileNotFoundError:
+            pass
         
-        df = pd.DataFrame(results_data)
-        if os.path.exists(results_path):
-            df.to_csv(results_path, mode='a', header=False, index=False)
-        else:
-            df.to_csv(results_path, index=False)
+        df.to_csv(results_path, index=False)
+        print(f"Results saved to {results_path}")
+
+    
     
     def printresults(self):
         if self.model_name=="TimeGPT":

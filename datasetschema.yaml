@@ -15,8 +15,8 @@ datasets:
     #train: [0,12194]
     #val: [12098,13936]
     #test: [13840,17420]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96, 192, 336, 720]
     dataset_path: "{{ base_path[run_environment] }}/ETTh1.csv"
 
   ETTh2:
@@ -25,8 +25,8 @@ datasets:
     train: [0,8460]
     val: [8544,11520]
     test: [11424,11400]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96, 192, 336, 720]
     dataset_path: "{{ base_path[run_environment] }}/ETTh2.csv"
 
 
@@ -36,8 +36,8 @@ datasets:
     train: [0,34560]
     val: [34464,46080]
     test: [45984,57600]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96, 192, 336, 720]
     dataset_path: "{{ base_path[run_environment] }}/ETTm1.csv"
 
 
@@ -47,8 +47,8 @@ datasets:
     train: [0,34560]
     val: [34464,46080]
     test: [45984,57600]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96, 192, 336, 720]
     dataset_path: "{{ base_path[run_environment] }}/ETTm2.csv"
 
 
@@ -58,8 +58,8 @@ datasets:
     train: [0,18412]
     val: [18316,21044]
     test: [20996,26304]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96]
     dataset_path: "{{ base_path[run_environment] }}/electricity.csv"
 
   Exchange:
@@ -68,8 +68,8 @@ datasets:
     train: [0,5311]
     val: [5215,6071]
     test: [5975,7588]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96, 192, 336, 720]
     dataset_path: "{{ base_path[run_environment] }}/exchange_rate.csv"
 
   Weather:
@@ -78,8 +78,8 @@ datasets:
     train: [0,36887]
     val: [36791,42157]
     test: [42061,53696]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96, 192, 336, 720]
     dataset_path: "{{ base_path[run_environment] }}/weather.csv"
 
   Illness:
@@ -88,8 +88,8 @@ datasets:
     train: [0,676]
     val: [640,773]
     test: [737,966]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96]
     dataset_path: "{{ base_path[run_environment] }}/national_illness.csv"    
 
   Divvy:
@@ -98,8 +98,8 @@ datasets:
     #train: [0,0]
     #val: [0,0]
     #test: [0,0]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96]
     dataset_path: "{{ base_path[run_environment] }}/DivvyBikes/df2021-8-9-10_VAR_nextdayAshrdata.csv"    
 
   M5:
@@ -108,8 +108,8 @@ datasets:
     #train: [0,0]
     #val: [0,0]
     #test: [0,0]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96]
     dataset_path: "{{ base_path[run_environment] }}/M5/sales_1000_Random_columns.csv"        
 
   Dilliards:
@@ -118,7 +118,7 @@ datasets:
     train: [0,0]
     val: [0,0]
     test: [0,0]
-    lag: 24
-    horizon: 6
+    lag: 48
+    horizon: [6, 12 ,24, 48, 96]
     dataset_path: "{{ base_path[run_environment] }}/dilliards.csv"
 

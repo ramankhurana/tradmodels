@@ -23,8 +23,16 @@ class BaseModel:
 
         ''' following are common for all models '''
         self.lag = self.dataset_info['lag']
-        self.horizon = self.dataset_info['horizon']
+
+        ## it ensures that the horizon is always a list. The remaining code to access horizon will also change. 
+        horizon_config = self.dataset_info['horizon']
+        self.horizon=[]
         
+        if isinstance(horizon_config, int):
+            self.horizon = [horizon_config]
+        else:
+            self.horizon = horizon_config
+                
         ''' common variable list over '''
         
     def load_data(self):

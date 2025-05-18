@@ -34,7 +34,7 @@ class ARIMAModel(BaseModel):
 
             print ("----------------------",train.shape, test.shape)
             
-            model = ARIMA(p=self.dataset_info['lag'])
+            model = ARIMA(p=self.dataset_info['lag'], d=1, q=0)
             model.fit(train)
             prediction = model.predict(len(test))
 
@@ -103,11 +103,12 @@ class ARIMAModel(BaseModel):
                 train_series = train[column]
                 test_series = test[column]
 
-                model = ARIMA(p=self.lag, d=1)
+                model = ARIMA(p=self.lag, d=1, q=0)
                 model.fit(train_series)
                 
                 prediction = model.predict(self.horizon)
                 predicted_values = prediction.values().flatten()
+
                 
                 
                 end = start + self.horizon
@@ -154,3 +155,97 @@ class ARIMAModel(BaseModel):
         return results, mse_scores, aggregate_mse, consolidated_mse, cons_metrics_
 
 
+
+    def rolling_window_multi_horizon_evaluation(self):
+        horizons = self.horizon
+        train_start, train_end = self.train_
+        val_start, val_end = self.val_
+        test_start, test_end = self.test_
+    
+        results = {}         # results[column][window_index][horizon] = prediction
+        mse_scores = {}      # mse_scores[column][horizon] = aggregated MSE
+        all_results = {}     # all_results[column][horizon] = (all_actuals, all_forecasts)
+    
+        series = TimeSeries.from_dataframe(
+            self.data, self.dataset_info['date_col'], fill_missing_dates=True
+        )
+    
+        for column in self.usable_cols:
+            print(f"Processing column: {column}")
+            results[column] = {}
+            mse_scores[column] = {}
+            all_results[column] = {h: ([], []) for h in horizons}
+    
+            max_horizon = max(horizons)
+            num_windows = (test_end - test_start) - max_horizon + 1
+            step_size = self.getStepSize(num_windows)
+            print("num_windows:", num_windows, "step_size:", step_size)
+    
+            window_counter = 0
+            for start in range(num_windows):
+                if ((self.dataset_info['name'] == "Illness") and (start % 10 != 0)) or (start % step_size != 0):
+                    continue
+                print ("----- fitting for window number: ", start)
+                
+                train = series[:val_end + 1 + start]
+                test = series[test_start + 1 + start + self.lag:]
+    
+                train_series = train[column]
+                test_series = test[column]
+    
+                model = ARIMA(p=self.lag, d=1,q=0)
+                model.fit(train_series)
+    
+                results[column][window_counter] = {}
+    
+                for horizon in horizons:
+                    if test_series.n_timesteps < horizon:
+                        continue  # Skip if not enough future data
+    
+                    prediction = model.predict(horizon)
+                    predicted_values = prediction.values().flatten()
+    
+                    actual_values = test_series[:horizon].values().flatten()
+                    if len(actual_values) != horizon:
+                        continue
+    
+                    # Save prediction for this window & horizon
+                    results[column][window_counter][horizon] = prediction
+    
+                    # Store for metrics
+                    all_results[column][horizon][0].extend(actual_values)  # actuals
+                    all_results[column][horizon][1].extend(predicted_values)  # forecasts
+    
+                window_counter += 1
+    
+            # Calculate MSE for each horizon for this column
+            for horizon in horizons:
+                actuals, forecasts = all_results[column][horizon]
+                if len(actuals) > 0:
+                    mse = mean_squared_error(actuals, forecasts)
+                    mse_scores[column][horizon] = mse
+    
+        # Consolidated metrics across all columns per horizon
+        consolidated_metrics = {}
+        for horizon in horizons:
+            total_actuals = []
+            total_forecasts = []
+    
+            for column in self.usable_cols:
+                actuals, forecasts = all_results[column][horizon]
+                total_actuals.extend(actuals)
+                total_forecasts.extend(forecasts)
+    
+            if total_actuals:
+                df_actuals = self.widen_and_rescale_dataframe(total_actuals, self.usable_cols)
+                df_forecasts = self.widen_and_rescale_dataframe(total_forecasts, self.usable_cols)
+    
+                cons_metrics = ForecastMetrics(total_actuals, total_forecasts, df_actuals.values, df_forecasts.values)
+                consolidated_metrics[horizon] = cons_metrics.calculate_all_metrics()
+    
+        print ("results: ",results)
+        print ("mse_scores: ", mse_scores)
+        print ("consolidated_metrics: ",consolidated_metrics)
+        
+        return results, mse_scores, consolidated_metrics
+    
