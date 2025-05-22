@@ -5,7 +5,7 @@ from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
 from ForecastMetrics import ForecastMetrics
-class ARIMAModel(BaseModel):
+class ARModel(BaseModel):
 
     def fit_predict(self):
         results = {}
@@ -248,4 +248,3 @@ class ARIMAModel(BaseModel):
         
         return results, mse_scores, consolidated_metrics
     
-BB
